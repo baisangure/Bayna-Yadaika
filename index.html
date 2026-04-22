@@ -1,169 +1,593 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-    <title>Darul Hadis</title>
-    <style>
-        :root{
-            --bg:#f3f7f5; --card:#ffffff; --text:#111827; --muted:#6b7280;
-            --line:#e5e7eb; --green:#14532d; --green2:#166534; --soft:#e7f3ec;
-            --shadow:0 10px 24px rgba(0,0,0,.07); --radius:22px;
-        }
-        *{box-sizing:border-box}
-        body{margin:0;font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text);padding-bottom:100px}
-        header{padding:18px;font-size:32px;font-weight:900;text-align:right}
-        .sub{padding:0 18px;color:var(--muted);font-size:13px;text-align:right}
-        .wrap{max-width:600px;margin:auto;padding:12px}
-        .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin:12px 0;box-shadow:var(--shadow)}
-        .hero{background:linear-gradient(135deg,var(--green),var(--green2));color:#fff}
-        .title{font-size:26px;font-weight:900}
-        .title2{font-size:20px;font-weight:900}
-        .hidden{display:none !important}
-        .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-        .btn{width:100%;min-height:52px;border:0;border-radius:18px;font-size:16px;font-weight:800;cursor:pointer}
-        .green{background:var(--green);color:#fff}
-        .light{background:#f3f4f6;color:#111827}
-        .soft{background:var(--soft);color:var(--green)}
-        .nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:grid;grid-template-columns:repeat(3,1fr);padding:10px;border-top:1px solid var(--line);gap:10px}
-        .ar{font-size:46px;text-align:center;direction:rtl;margin:20px 0}
-        .unitBox{border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:10px;background:#fff}
-        .progress{height:10px;border-radius:10px;background:#e5e7eb;overflow:hidden;margin:10px 0}
-        #progressBar{height:100%;width:0%;background:var(--green);transition:0.3s}
-    </style>
-</head>
-<body>
-
 <header>دار الحديث</header>
-<div class="sub">Помощник по арабскому: словарь и карточки</div>
-
+<div class="sub">Помощник по арабскому: словарь, карточки и обучение</div>
 <div class="wrap">
-    <section id="home">
-        <div class="card hero"><div class="title">Библиотека</div></div>
-        <div class="grid2">
-            <div class="card">
-                <div class="title2">بين يديك</div>
-                <br>
-                <button class="btn green" onclick="showPage('books')">Открыть</button>
-            </div>
-            <div class="card">
-                <div class="title2">البناء</div>
-                <div class="small">Скоро</div>
-                <br>
-                <button class="btn soft">Открыть</button>
-            </div>
-            <div class="card">
-                <div class="title2">الآجرومية</div>
-                <div class="small">Скоро</div>
-                <br>
-                <button class="btn soft">Открыть</button>
-            </div>
-            <div class="card">
-                <div class="title2">الأربعون</div>
-                <div class="small">Скоро</div>
-                <br>
-                <button class="btn soft">Открыть</button>
-            </div>
-        </div>
-    </section>
 
-    <section id="books" class="hidden">
-        <div class="card">
-            <div class="title">Выберите часть</div>
-            <div id="partsList" style="margin-top:15px"></div>
-            <button class="btn light" onclick="showPage('home')">Назад</button>
-        </div>
-    </section>
+<section id="home">
+  <div class="card hero">
+    <div class="title">Библиотека</div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="title2">بين يديك</div>
+      <br>
+      <button class="btn green" onclick="showPage('books')">Открыть</button>
+    </div>
+    <div class="card">
+      <div class="title2">البناء</div>
+      <div class="small">Скоро</div>
+      <br>
+      <button class="btn soft" onclick="soon()">Открыть</button>
+    </div>
+    <div class="card">
+      <div class="title2">الآجرومية</div>
+      <div class="small">Скоро</div>
+      <br>
+      <button class="btn soft" onclick="soon()">Открыть</button>
+    </div>
+    <div class="card">
+      <div class="title2">الأربعون النووية</div>
+      <div class="small">Скоро</div>
+      <br>
+      <button class="btn soft" onclick="soon()">Открыть</button>
+    </div>
+  </div>
+</section>
 
-    <section id="units" class="hidden">
-        <div class="card">
-            <div id="unitsTitle" class="title">Вахьдаты</div>
-            <div id="unitsList" style="margin-top:15px"></div>
-            <button class="btn light" onclick="showPage('books')">Назад</button>
-        </div>
-    </section>
+<section id="studyHub" class="hidden">
+  <div class="card">
+    <div class="title">Учёба</div>
+    <div class="small">Разделы, колоды, трудные слова и новые слова</div>
+    <div class="hr"></div>
+    <div class="grid2">
+      <div class="card">
+        <div class="title3">Разделы</div>
+        <div class="small">Книга и части</div>
+        <br>
+        <button class="btn green" onclick="showPage('books')">Открыть</button>
+      </div>
+      <div class="card">
+        <div class="title3">Колоды</div>
+        <div class="small">Свои наборы</div>
+        <br>
+        <button class="btn green" onclick="showPage('deckPage')">Открыть</button>
+      </div>
+      <div class="card">
+        <div class="title3">Трудные слова</div>
+        <div class="small">Сохранённые слова</div>
+        <br>
+        <button class="btn green" onclick="openHardWords()">Открыть</button>
+      </div>
+      <div class="card">
+        <div class="title3">Новые слова</div>
+        <div class="small">Ещё не изученные</div>
+        <br>
+        <button class="btn green" onclick="openNewWords()">Открыть</button>
+      </div>
+    </div>
+    <div class="hr"></div>
+    <button class="btn green" onclick="showPage('home')">Назад</button>
+  </div>
+</section>
 
-    <section id="study" class="hidden">
-        <div class="card">
-            <div id="studyTitle" class="title2">Урок</div>
-            <div class="progress"><div id="progressBar"></div></div>
-            <div id="front" class="ar"></div>
-            <div id="back" style="text-align:center; min-height:30px; color:gray"></div>
-            <br>
-            <button class="btn green" onclick="flipCard()">Показать ответ</button>
-            <div class="grid2" style="margin-top:10px">
-                <button class="btn light" onclick="nextCard()">Дальше</button>
-                <button class="btn soft" onclick="showPage('units')">Выход</button>
-            </div>
-        </div>
-    </section>
+<section id="books" class="hidden">
+  <div class="card">
+    <div class="title">بين يديك</div>
+    <div class="small">Части книги</div>
+    <div class="hr"></div>
+    <div id="partsList" class="list"></div>
+    <div class="hr"></div>
+    <button class="btn green" onclick="showPage('studyHub')">Назад</button>
+  </div>
+</section>
+
+<section id="units" class="hidden">
+  <div class="card">
+    <div id="unitsTitle" class="title">Вахьдаты</div>
+    <div class="small" id="unitsMeta">Часть 1</div>
+    <div class="hr"></div>
+    <div id="unitsList" class="list"></div>
+    <div class="hr"></div>
+    <button class="btn green" onclick="showPage('books')">Назад</button>
+  </div>
+</section>
+
+<section id="study" class="hidden">
+  <div class="card">
+    <div id="studyTitle" class="title">Учёба</div>
+    <div id="meta" class="small"></div>
+    <div style="margin-top:10px" class="progress"><div id="progressBar"></div></div>
+    <div id="progressText" class="tiny" style="margin-top:6px">0%</div>
+    <div id="front" class="ar"></div>
+    <div id="back" class="small" style="text-align:center">Нажми показать ответ</div>
+    <br>
+    <button class="btn green" onclick="flipCard()">Показать ответ</button>
+    <br><br>
+    <div class="grid2">
+      <button class="btn light" onclick="rate('hard')">Трудно</button>
+      <button class="btn light" onclick="rate('ok')">Нормально</button>
+      <button class="btn light" onclick="rate('easy')">Легко</button>
+      <button class="btn light" onclick="skipCard()">Пропустить</button>
+    </div>
+    <br>
+    <button class="btn green" onclick="backToSource()">Назад</button>
+  </div>
+</section>
+
+<section id="deckPage" class="hidden">
+  <div class="card">
+    <div class="title">Мои колоды</div>
+    <div class="small">Создание и обучение</div>
+    <div class="hr"></div>
+    <div class="title3">Создать колоду</div>
+    <input id="deckName" placeholder="Название новой колоды" maxlength="60">
+    <button class="btn green" onclick="createDeck()">Создать колоду</button>
+    <div class="hr"></div>
+    <div id="deckList" class="list"></div>
+    <div class="hr"></div>
+    <div class="title3">Добавить слово в колоду</div>
+    <input id="wordAr" placeholder="Арабское слово" maxlength="120">
+    <input id="wordRu" placeholder="Перевод" maxlength="120">
+    <select id="deckSelect"></select>
+    <button class="btn green" onclick="addWordToDeck()">Добавить</button>
+    <div style="height:12px"></div>
+    <button class="btn green" onclick="showPage('studyHub')">Назад</button>
+  </div>
+</section>
+
+<section id="stats" class="hidden">
+  <div class="card">
+    <div class="title">Статистика</div>
+    <div class="small">Прогресс хранится в браузере</div>
+    <div class="hr"></div>
+    <div class="grid2">
+      <div class="card"><div class="small">Изучено</div><div id="st1" class="stat">0</div></div>
+      <div class="card"><div class="small">Трудных</div><div id="st2" class="stat">0</div></div>
+      <div class="card"><div class="small">Колод</div><div id="st3" class="stat">0</div></div>
+      <div class="card"><div class="small">Всего слов</div><div id="st4" class="stat">0</div></div>
+    </div>
+  </div>
+</section>
+
 </div>
 
 <nav class="nav">
-    <button class="btn light" onclick="showPage('home')">Главная</button>
-    <button class="btn light" onclick="showPage('books')">Учёба</button>
-    <button class="btn light" onclick="alert('Статистика скоро')">Статы</button>
+  <button class="btn light" onclick="showPage('home')">Главная</button>
+  <button class="btn light" onclick="showPage('studyHub')">Учёба</button>
+  <button class="btn light" onclick="showPage('stats')">Статистика</button>
 </nav>
 
-<script>
-    const unit1 = [ ['اِثْنَانِ','Два'], ['أَخٌ','Брат'], ['أُخْتٌ','Сестра'], ['أَنَا','Я'], ['أَنْتَ','Ты'] ];
-    const unit2 = [ ['أَبٌ','Отец'], ['اِبْنٌ','Сын'], ['أُمٌّ','Мать'], ['أَيْنَ','Где'] ];
+:root{
+  --bg:#f3f7f5;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --line:#e5e7eb;
+  --green:#14532d;
+  --green2:#166534;
+  --soft:#e7f3ec;
+  --danger:#dc2626;
+  --shadow:0 10px 24px rgba(0,0,0,.07);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+header{padding:18px 18px 8px;font-size:32px;font-weight:900;letter-spacing:-.2px}
+.sub{padding:0 18px 12px;color:var(--muted);font-size:13px}
+.wrap{max-width:940px;margin:auto;padding:12px 12px 140px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin:12px 0;box-shadow:var(--shadow)}
+.hero{background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;border:0}
+.title{font-size:26px;font-weight:900;line-height:1.15}
+.title2{font-size:20px;font-weight:900;line-height:1.2}
+.title3{font-size:17px;font-weight:900;line-height:1.2}
+.small{font-size:13px;color:var(--muted)}
+.tiny{font-size:12px;color:var(--muted)}
+.hr{height:1px;background:var(--line);margin:12px 0}
+.hidden{display:none !important}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.list{display:flex;flex-direction:column;gap:12px}
+.btn{width:100%;min-height:52px;padding:14px;border:0;border-radius:18px;font-size:16px;font-weight:800;cursor:pointer;transition:transform .12s ease,opacity .12s ease,background .12s ease}
+.btn:active{transform:scale(.985)}
+.green{background:var(--green);color:#fff}
+.green:hover{background:var(--green2)}
+.light{background:#f3f4f6;color:#111827}
+.soft{background:var(--soft);color:#0f172a}
+.red{background:var(--danger);color:#fff}
+input,select{width:100%;min-height:52px;padding:14px;border:1px solid #d1d5db;border-radius:16px;margin-bottom:10px;background:#fff;outline:none}
+input:focus,select:focus{border-color:rgba(20,83,45,.45);box-shadow:0 0 0 4px rgba(20,83,45,.08)}
+.nav{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);padding:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;box-shadow:0 -8px 24px rgba(0,0,0,.08)}
+.stat{font-size:28px;font-weight:900;margin-top:6px}
+.ar{font-size:46px;text-align:center;direction:rtl;margin:18px 0;line-height:1.5;word-break:break-word}
+.deck{border:1px solid var(--line);border-radius:18px;padding:14px;margin:10px 0;background:#fff}
+.unitBox{border:1px solid var(--line);border-radius:18px;padding:14px;background:#fff}
+.badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#eef7f1;color:var(--green);font-size:12px;font-weight:800}
+.progress{height:10px;border-radius:999px;background:#e5e7eb;overflow:hidden}
+.progress > div{height:100%;width:0%;background:linear-gradient(90deg,var(--green),#22c55e)}
+.wordList{display:flex;flex-direction:column;gap:10px}
+.wordRow{border:1px solid var(--line);border-radius:18px;padding:14px;background:#fff}
+.wordRow .arSmall{font-size:24px;direction:rtl;text-align:right;font-weight:900;line-height:1.25}
+.wordRow .ru{font-size:14px;color:var(--muted);margin-top:6px}
+@media(max-width:720px){.grid2,.grid3{grid-template-columns:1fr 1fr}.ar{font-size:40px}}
+@media(max-width:420px){.grid2,.grid3,.nav{grid-template-columns:1fr 1fr}.ar{font-size:38px}}
 
-    let queue = [];
-    let current = null;
+'use strict';
 
-    function $(id) { return document.getElementById(id); }
+const STORAGE = {
+  hard: 'dhp_hard',
+  studied: 'dhp_studied',
+  decks: 'dhp_decks',
+  seen: 'dhp_seen'
+};
 
-    function showPage(id) {
-        document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-        $(id).classList.remove('hidden');
-        if(id === 'books') renderParts();
+const unit1 = [
+  ['اِثْنَانِ','Два'], ['أَخٌ','Брат'], ['أُخْتٌ','Сестра'], ['أَرْبَعَةٌ','Четыре'], ['اِسْمٌ','Имя'],
+  ['اللّٰه','Аллах'], ['أَنَا','Я'], ['أَنْتَ','Ты'], ['أَنْتِ','Ты (ж.)'], ['أَهْلًا وَسَهْلًا','Добро пожаловать'],
+  ['بَاكِسْتَانِيٌّ','Пакистанец'], ['بِخَيْرٍ','Хорошо'], ['ثَلَاثَةٌ','Три'], ['جِنْسِيَّةٌ','Национальность'], ['اَلْحَمْدُ لِلّٰهِ','Хвала Аллаху'],
+  ['خَمْسَةٌ','Пять'], ['اَلسَّلَامُ عَلَيْكُمْ','Мир вам'], ['صَدِيقٌ','Друг'], ['صَدِيقَةٌ','Подруга'], ['طَالِبَةٌ','Студентка'],
+  ['طَبِيبَةٌ','Врач'], ['لِ','Для'], ['لَكَ','Тебе'], ['لَكِ','Тебе (ж.)'], ['كَيْفَ حَالُكَ؟','Как дела?'],
+  ['كَيْفَ حَالُكِ؟','Как дела?'], ['مَا اسْمُكَ؟','Как тебя зовут?'], ['مَا اسْمُكِ؟','Как тебя зовут?'], ['مَا جِنْسِيَّتُكَ؟','Твоя национальность?'], ['مَا جِنْسِيَّتُكِ؟','Твоя национальность?'],
+  ['مُدَرِّسٌ','Учитель'], ['مَعَ السَّلَامَةِ','До свидания'], ['مِنْ','Из'], ['مِنْ أَيْنَ؟','Откуда?'], ['مُهَنْدِسٌ','Инженер'],
+  ['نَعَمْ','Да'], ['هٰذَا','Это'], ['هٰذِهِ','Это'], ['هُوَ','Он'], ['هِيَ','Она'],
+  ['وَ','И'], ['وَاحِدٌ','Один'], ['وَعَلَيْكُمُ السَّلَامُ','И вам мир'], ['قَلَمٌ','Ручка'], ['كِتَابٌ','Книга'],
+  ['بَابٌ','Дверь'], ['مَسْجِدٌ','Мечеть'], ['مَدْرَسَةٌ','Школа'], ['سَيَّارَةٌ','Машина'], ['لُغَةٌ','Язык'],
+  ['طَعَامٌ','Еда'], ['مَاءٌ','Вода'], ['شَايٌ','Чай']
+];
+
+const unit2 = [
+  ['أَبٌ','Отец'], ['اِبْنٌ','Сын'], ['اِبْنَةٌ','Дочь'], ['أَذَانٌ','Азан'], ['أُسْرَةٌ','Семья'],
+  ['اللّٰهُ أَكْبَرُ','Аллах Велик'], ['إِلَى','К'], ['أُمٌّ','Мать'], ['أَوْلَادٌ','Дети'], ['أَيْنَ','Где'],
+  ['تِسْعَةٌ','Девять'], ['تَوَضَّأَ','Совершил омовение'], ['يَتَوَضَّأُ','Совершает омовение'], ['ثَمَانِيَةٌ','Восемь'], ['جَدٌّ','Дед'],
+  ['جَدَّةٌ','Бабушка'], ['حَمَّامٌ','Ванная'], ['الرَّسُولُ','Посланник'], ['سَبْعَةٌ','Семь'], ['سِتَّةٌ','Шесть'],
+  ['شَجَرَةٌ','Дерево'], ['صَلَّى','Совершил молитву'], ['يُصَلِّي','Совершает молитву'], ['صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ','Мир ему'], ['صُورَةٌ','Фото'],
+  ['طَالِبٌ','Студент'], ['عَشَرَةٌ','Десять'], ['عَمٌّ','Дядя'], ['عَمَّةٌ','Тётя'], ['غُرْفَةٌ','Комната'],
+  ['الفَجْرِ','Фаджр'], ['فِي','В'], ['قَرَأَ','Читал'], ['يَقْرَأُ','Читает'], ['القُرْآنَ','Коран'],
+  ['مَا شَاءَ اللَّه','Как пожелал Аллах'], ['مَسْجِدٌ','Мечеть'], ['مُصَلًّى','Молельня'], ['مِعْطَفٌ','Пальто'], ['مُعَلِّمَةٌ','Учительница'],
+  ['مَنْ','Кто'], ['نَظَّارَةٌ','Очки'], ['هُ','Его'], ['هَا','Её'], ['هَيَّا بِنَا','Пойдём'],
+  ['وَالِدٌ','Отец'], ['وَالِدَةٌ','Мать'], ['يَا','О']
+];
+
+const books = [
+  { id: 1, title: 'بين يديك', parts: 8, units: 8 },
+  { id: 2, title: 'البناء', parts: 8, units: 8 },
+  { id: 3, title: 'الآجرومية', parts: 8, units: 8 },
+  { id: 4, title: 'الأربعون النووية', parts: 8, units: 8 }
+];
+
+const partUnits = {
+  1: {
+    1: unit1,
+    2: unit2
+  }
+};
+
+let studied = readNumber(STORAGE.studied, 0);
+let hardWords = readJSON(STORAGE.hard, []);
+let decks = readJSON(STORAGE.decks, {});
+let seenWords = readJSON(STORAGE.seen, []);
+let queue = [];
+let current = null;
+let currentSource = 'studyHub';
+let currentTitle = 'Учёба';
+
+function $(id){ return document.getElementById(id); }
+function readJSON(key, fallback){
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch (e) {
+    return fallback;
+  }
+}
+function readNumber(key, fallback){
+  const n = parseInt(localStorage.getItem(key) || String(fallback), 10);
+  return Number.isFinite(n) ? n : fallback;
+}
+function saveAll(){
+  localStorage.setItem(STORAGE.hard, JSON.stringify(hardWords));
+  localStorage.setItem(STORAGE.studied, String(studied));
+  localStorage.setItem(STORAGE.decks, JSON.stringify(decks));
+  localStorage.setItem(STORAGE.seen, JSON.stringify(seenWords));
+}
+function cloneWords(arr){ return arr.map(pair => [pair[0], pair[1]]); }
+function uniqueByArabic(words){
+  const seen = new Set();
+  const out = [];
+  for (const w of words) {
+    if (!seen.has(w[0])) {
+      seen.add(w[0]);
+      out.push([w[0], w[1]]);
     }
+  }
+  return out;
+}
+function getAllBookWords(){
+  return uniqueByArabic([...unit1, ...unit2]);
+}
+function getNewWords(){
+  const seen = new Set(seenWords.map(x => x[0]));
+  return getAllBookWords().filter(w => !seen.has(w[0]));
+}
+function showPage(id){
+  ['home','studyHub','books','units','study','deckPage','stats'].forEach(x => $(x).classList.add('hidden'));
+  $(id).classList.remove('hidden');
+  if(id === 'books') renderParts();
+  if(id === 'units') renderUnits();
+  if(id === 'deckPage') renderDecks();
+  updateStats();
+}
+function soon(){ alert('Скоро'); }
 
-    function renderParts() {
-        $('partsList').innerHTML = `<div class="unitBox">
-            <div class="title2">Часть 1</div>
-            <button class="btn green" style="margin-top:10px" onclick="openPart(1)">Открыть</button>
-        </div>`;
+function renderParts(){
+  const wrap = $('partsList');
+  let html = '';
+  for (let p = 1; p <= 8; p++) {
+    const label = p === 1 ? 'Доступна' : 'Скоро';
+    html += `
+      <div class="unitBox">
+        <div class="title3">Часть ${p}</div>
+        <div class="small">${label}</div>
+        <div class="hr"></div>
+        <button class="btn ${p === 1 ? 'green' : 'soft'}" onclick="openPart(${p})">Открыть</button>
+      </div>
+    `;
+  }
+  wrap.innerHTML = html;
+}
+
+function openPart(partNum){
+  $('unitsTitle').innerText = 'Вахьдаты';
+  $('unitsMeta').innerText = 'Часть ' + partNum;
+  $('unitsList').dataset.part = String(partNum);
+  showPage('units');
+}
+
+function renderUnits(){
+  const partNum = Number($('unitsList').dataset.part || '1');
+  const wrap = $('unitsList');
+  let html='';
+  for(let u=1;u<=8;u++){
+    const active = partNum===1 && (u===1 || u===2);
+    html += '<div class="unitBox">'
+      + '<div class="title3">Вахьда '+u+'</div>'
+      + '<div class="small">'+(active?'Открыта':'Скоро')+'</div>'
+      + '<div class="hr"></div>'
+      + '<button class="btn '+(active?'green':'soft')+'" type="button" onclick="openUnit('+partNum+','+u+')">Открыть</button>'
+      + '</div>';
+  }
+  wrap.innerHTML = html;
+}
+
+function openUnit(partNum, unitNum){
+  const p = Number(partNum);
+  const u = Number(unitNum);
+  if(p===1 && u===1){ openStudy(unit1,'Часть 1 • Вахьда 1','units'); return; }
+  if(p===1 && u===2){ openStudy(unit2,'Часть 1 • Вахьда 2','units'); return; }
+  soon();
+}
+
+function openHardWords(){
+  if (hardWords.length === 0) {
+    alert('Трудных слов пока нет');
+    return;
+  }
+  currentSource = 'hard';
+  currentTitle = 'Трудные слова';
+  openStudy(hardWords, currentTitle, 'studyHub');
+}
+
+function openNewWords(){
+  const words = getNewWords();
+  if (words.length === 0) {
+    alert('Новых слов пока нет');
+    return;
+  }
+  currentSource = 'new';
+  currentTitle = 'Новые слова';
+  openStudy(words, currentTitle, 'studyHub');
+}
+
+function openDeck(name){
+  const deck = decks[name] || [];
+  if (deck.length === 0) {
+    alert('В колоде нет слов');
+    return;
+  }
+  currentSource = 'deck';
+  currentTitle = name;
+  openStudy(deck, currentTitle, 'deckPage');
+}
+
+function openStudy(words, title, backPage){
+  queue = cloneWords(words);
+  shuffle(queue);
+  current = null;
+  currentBackPage = backPage;
+  $('studyTitle').innerText = title;
+  showPage('study');
+  nextCard();
+}
+
+function shuffle(arr){
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function nextCard(){
+  if (queue.length === 0) {
+    current = null;
+    $('front').innerText = '✓';
+    $('back').innerText = 'Готово';
+    $('meta').innerText = '';
+    $('progressBar').style.width = '100%';
+    $('progressText').innerText = '100%';
+    saveAll();
+    return;
+  }
+  current = queue.shift();
+  $('front').innerText = current[0];
+  $('back').innerText = 'Нажми показать ответ';
+  $('meta').innerText = 'Осталось ' + queue.length;
+  const total = queue.length + 1;
+  const percent = Math.max(0, Math.min(100, Math.round(((queue.length >= 0 ? total - queue.length - 1 : 0) / total) * 100)));
+  $('progressBar').style.width = percent + '%';
+  $('progressText').innerText = percent + '%';
+}
+
+function flipCard(){
+  if (!current) return;
+  $('back').innerText = current[1];
+}
+
+function markSeen(word){
+  if (!seenWords.some(x => x[0] === word[0])) seenWords.push([word[0], word[1]]);
+}
+
+function addHard(word){
+  if (!hardWords.some(x => x[0] === word[0])) hardWords.push([word[0], word[1]]);
+}
+
+function rate(kind){
+  if (!current) return;
+  studied++;
+  markSeen(current);
+  if (kind === 'hard') addHard(current);
+  if (kind === 'hard') queue.splice(Math.min(8, queue.length), 0, current);
+  if (kind === 'ok') queue.splice(Math.min(16, queue.length), 0, current);
+  if (kind === 'easy') queue.splice(Math.min(32, queue.length), 0, current);
+  saveAll();
+  nextCard();
+  updateStats();
+}
+
+function skipCard(){
+  if (!current) return;
+  queue.push(current);
+  nextCard();
+}
+
+function backToSource(){
+  showPage(currentBackPage);
+}
+
+function createDeck(){
+  const name = $('deckName').value.trim();
+  if (!name) return;
+  if (!decks[name]) decks[name] = [];
+  $('deckName').value = '';
+  saveAll();
+  renderDecks();
+  updateStats();
+}
+
+function addWordToDeck(){
+  const ar = $('wordAr').value.trim();
+  const ru = $('wordRu').value.trim();
+  const deck = $('deckSelect').value;
+  if (!ar || !ru || !deck) return;
+  if (!decks[deck]) decks[deck] = [];
+  decks[deck].push([ar, ru]);
+  $('wordAr').value = '';
+  $('wordRu').value = '';
+  saveAll();
+  renderDecks();
+  updateStats();
+}
+
+function deleteDeck(name){
+  try{
+    if(!name) return;
+    const key = String(name);
+    if(!confirm('Удалить колоду?')) return;
+    if(Object.prototype.hasOwnProperty.call(decks,key)){
+      delete decks[key];
+      saveAll();
+      renderDecks();
+      updateStats();
     }
+  }catch(e){ alert('Ошибка удаления'); }
+}
 
-    function openPart(p) {
-        let html = '';
-        for(let u=1; u<=2; u++) {
-            html += `<div class="unitBox">
-                <b>Вахьда ${u}</b>
-                <button class="btn green" style="margin-top:10px" onclick="startLesson(${u})">Начать</button>
-            </div>`;
-        }
-        $('unitsList').innerHTML = html;
-        showPage('units');
+function renderDecks(){
+  const list=$('deckList');
+  const select=$('deckSelect');
+  const names=Object.keys(decks||{});
+  let html='';
+  let opts='<option value="">Выбери колоду</option>';
+  if(names.length===0){list.innerHTML='<div class="small">Колод пока нет</div>';select.innerHTML=opts;return;}
+  names.forEach(function(name){
+    const count=(decks[name]||[]).length;
+    html += '<div class="deck">'
+      + '<div class="title3">'+escapeHTML(name)+'</div>'
+      + '<div class="small">'+count+' слов</div>'
+      + '<div class="hr"></div>'
+      + '<div class="grid2">'
+      + '<button class="btn green" type="button" data-name="'+escapeHTML(name)+'" onclick="openDeck(this.dataset.name)">Учить</button>'
+      + '<button class="btn red" type="button" data-name="'+escapeHTML(name)+'" onclick="deleteDeck(this.dataset.name)">Удалить</button>'
+      + '</div></div>';
+    opts += '<option value="'+escapeHTML(name)+'">'+escapeHTML(name)+'</option>';
+  });
+  list.innerHTML=html;
+  select.innerHTML=opts;
+}
+
+function updateStats(){
+  $('st1').innerText = studied;
+  $('st2').innerText = hardWords.length;
+  $('st3').innerText = Object.keys(decks).length;
+  $('st4').innerText = getAllBookWords().length;
+}
+
+function resetAll(){
+  localStorage.clear();
+  location.reload();
+}
+
+function escapeHTML(str){
+  return String(str)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function init(){
+  renderParts();
+  updateStats();
+  document.addEventListener('keydown', function(e){
+    if (e.key === ' ' && !$('study').classList.contains('hidden')) {
+      e.preventDefault();
+      flipCard();
     }
+    if (e.key === '1' && !$('study').classList.contains('hidden')) rate('hard');
+    if (e.key === '2' && !$('study').classList.contains('hidden')) rate('ok');
+    if (e.key === '3' && !$('study').classList.contains('hidden')) rate('easy');
+    if (e.key === 'Escape' && !$('study').classList.contains('hidden')) backToSource();
+  });
+}
 
-    function startLesson(u) {
-        const words = (u === 1) ? unit1 : unit2;
-        queue = [...words].sort(() => Math.random() - 0.5);
-        showPage('study');
-        nextCard();
-    }
+window.showPage = showPage;
+window.soon = soon;
+window.openPart = openPart;
+window.openUnit = openUnit;
+window.openHardWords = openHardWords;
+window.openNewWords = openNewWords;
+window.openDeck = openDeck;
+window.openStudy = openStudy;
+window.nextCard = nextCard;
+window.flipCard = flipCard;
+window.rate = rate;
+window.skipCard = skipCard;
+window.backToSource = backToSource;
+window.createDeck = createDeck;
+window.addWordToDeck = addWordToDeck;
+window.deleteDeck = deleteDeck;
+window.resetAll = resetAll;
+window.renderDecks = renderDecks;
+window.updateStats = updateStats;
 
-    function nextCard() {
-        if (queue.length === 0) {
-            $('front').innerText = '✅';
-            $('back').innerText = 'Урок окончен!';
-            $('progressBar').style.width = '100%';
-            return;
-        }
-        current = queue.shift();
-        $('front').innerText = current[0];
-        $('back').innerText = '';
-        $('progressBar').style.width = '30%';
-    }
-
-    function flipCard() {
-        if(current) $('back').innerText = current[1];
-    }
-
-    showPage('home');
-</script>
-</body>
-</html>
+init();
