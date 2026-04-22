@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>Darul Hadis Pro</title>
+    <style>
+        :root{
+            --bg:#f3f7f5; --card:#ffffff; --text:#111827; --muted:#6b7280;
+            --line:#e5e7eb; --green:#14532d; --green2:#166534; --soft:#e7f3ec;
+            --danger:#dc2626; --shadow:0 10px 24px rgba(0,0,0,.07); --radius:22px;
+        }
+        *{box-sizing:border-box}
+        body{margin:0;font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text);padding-bottom:100px}
+        header{padding:20px;font-size:32px;font-weight:900;text-align:right}
+        .wrap{max-width:600px;margin:auto;padding:12px}
+        .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
+        .hero{background:linear-gradient(135deg,var(--green),var(--green2));color:#fff}
+        .title{font-size:24px;font-weight:900}
+        .title2{font-size:20px;font-weight:800}
+        .small{font-size:13px;color:var(--muted)}
+        .hr{height:1px;background:var(--line);margin:12px 0}
+        .hidden{display:none !important}
+        .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+        .btn{width:100%;min-height:50px;border:0;border-radius:15px;font-weight:800;cursor:pointer;background:var(--green);color:#fff}
+        .btn.soft{background:var(--soft);color:var(--green)}
+        .btn.light{background:#eee;color:#333}
+        .nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:grid;grid-template-columns:repeat(3,1fr);padding:10px;border-top:1px solid var(--line)}
+        .ar{font-size:40px;text-align:center;direction:rtl;margin:20px 0}
+        .unitBox{border:1px solid var(--line);border-radius:15px;padding:15px;margin-bottom:10px;background:#fff}
+        .progress{height:8px;background:#eee;border-radius:10px;overflow:hidden}
+        #progressBar{height:100%;background:var(--green);transition:0.3s;width:0%}
+    </style>
+</head>
+<body>
+
+<header>دار الحديث</header>
+
+<div class="wrap">
+    <section id="home">
+        <div class="card hero"><div class="title">Библиотека</div></div>
+        <div class="grid2">
+            <div class="card">
+                <div class="title2">بين يديك</div>
+                <br>
+                <button class="btn" onclick="showPage('books')">Открыть</button>
+            </div>
+            <div class="card"><div class="title2">Скоро...</div></div>
+        </div>
+    </section>
+
+    <section id="books" class="hidden">
+        <div class="card">
+            <div class="title">Выберите часть</div>
+            <div id="partsList" style="margin-top:15px"></div>
+            <button class="btn light" onclick="showPage('home')">Назад</button>
+        </div>
+    </section>
+
+    <section id="units" class="hidden">
+        <div class="card">
+            <div class="title" id="unitsTitle">Вахьдаты</div>
+            <div id="unitsList" style="margin-top:15px"></div>
+            <button class="btn light" onclick="showPage('books')">Назад</button>
+        </div>
+    </section>
+
+    <section id="study" class="hidden">
+        <div class="card">
+            <div id="studyTitle" class="small">Урок</div>
+            <div class="progress"><div id="progressBar"></div></div>
+            <div id="front" class="ar"></div>
+            <div id="back" style="text-align:center;min-height:30px;color:var(--muted)"></div>
+            <br>
+            <button class="btn" onclick="flipCard()">Показать ответ</button>
+            <div class="grid2" style="margin-top:10px">
+                <button class="btn light" onclick="rate()">Дальше</button>
+                <button class="btn light" onclick="backToSource()">Выход</button>
+            </div>
+        </div>
+    </section>
+</div>
+
+<nav class="nav">
+    <button onclick="showPage('home')">🏠</button>
+    <button onclick="showPage('books')">📚</button>
+    <button onclick="alert('Статистика в разработке')">📊</button>
+</nav>
+
+<script>
+// ДАННЫЕ СЛОВ
+const unit1 = [
+  ['اِثْنَانِ','Два'], ['أَخٌ','Брат'], ['أُخْتٌ','Сестра'], ['أَرْبَعَةٌ','Четыре'], ['اِسْمٌ','Имя'],
+  ['اللّٰه','Аллах'], ['أَنَا','Я'], ['أَنْتَ','Ты'], ['أَنْتِ','Ты (ж.)'], ['أَهْلًا وَسَهْلًا','Добро пожаловать'],
+  ['بَاكِسْتَانِيٌّ','Пакистанец'], ['بِخَيْرٍ','Хорошо'], ['ثَلَاثَةٌ','Три'], ['جِنْسِيَّةٌ','Национальность'], ['اَلْحَمْدُ لِلّٰهِ','Хвала Аллаху'],
+  ['خَمْسَةٌ','Пять'], ['اَلسَّلَامُ عَلَيْكُمْ','Мир вам'], ['صَدِيقٌ','Друг'], ['صَدِيقَةٌ','Подруга'], ['طَالِبَةٌ','Студентка'],
+  ['طَبِيبَةٌ','Врач'], ['لِ','Для'], ['لَكَ','Тебе'], ['لَكِ','Тебе (ж.)'], ['كَيْفَ حَالُكَ؟','Как дела?'],
+  ['كَيْفَ حَالُكِ؟','Как дела?'], ['مَا اسْمُكَ؟','Как тебя зовут?'], ['مَا اسْمُكِ؟','Как тебя зовут?'], ['مَا جِنْسِيَّتُكَ؟','Твоя национальность?'], ['مَا جِنْسِيَّتُكِ؟','Твоя национальность?'],
+  ['مُدَرِّسٌ','Учитель'], ['مَعَ السَّلَامَةِ','До свидания'], ['مِنْ','Из'], ['مِنْ أَيْنَ؟','Откуда?'], ['مُهَنْدِسٌ','Инженер'],
+  ['نَعَمْ','Да'], ['هٰذَا','Это'], ['هٰذِهِ','Это'], ['هُوَ','Он'], ['هِيَ','Она'],
+  ['وَ','И'], ['وَاحِدٌ','Один'], ['وَعَلَيْكُمُ السَّلَامُ','И вам мир'], ['قَلَمٌ','Ручка'], ['كِتَابٌ','Книга'],
+  ['بَابٌ','Дверь'], ['مَسْجِدٌ','Мечеть'], ['مَدْرَسَةٌ','Школа'], ['سَيَّارَةٌ','Машина'], ['لُغَةٌ','Язык'],
+  ['طَعَامٌ','Еда'], ['مَاءٌ','Вода'], ['شَايٌ','Чай']
+];
+
+const unit2 = [
+  ['أَبٌ','Отец'], ['اِبْنٌ','Сын'], ['اِبْنَةٌ','Дочь'], ['أَذَانٌ','Азан'], ['أُسْرَةٌ','Семья'],
+  ['اللّٰهُ أَكْبَرُ','Аллах Велик'], ['إِلَى','К'], ['أُمٌّ','Мать'], ['أَوْلَادٌ','Дети'], ['أَيْنَ','Где'],
+  ['تِسْعَةٌ','Девять'], ['تَوَضَّأَ','Совершил омовение'], ['يَتَوَضَّأُ','Совершает омовение'], ['ثَمَانِيَةٌ','Восемь'], ['جَدٌّ','Дед'],
+  ['جَدَّةٌ','Бабушка'], ['حَمَّامٌ','Ванная'], ['الرَّسُولُ','Посланник'], ['سَبْبَعَةٌ','Семь'], ['سِتَّةٌ','Шесть'],
+  ['شَجَرَةٌ','Дерево'], ['صَلَّى','Совершил молитву'], ['يُصَلِّي','Совершает молитву'], ['صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ','Мир ему'], ['صُورَةٌ','Фото'],
+  ['طَالِبٌ','Студент'], ['عَشَرَةٌ','Десять'], ['عَمٌّ','Дядя'], ['عَمَّةٌ','Тётя'], ['غُرْفَةٌ','Комната'],
+  ['الفَجْرِ','Фаджр'], ['فِي','В'], ['قَرَأَ','Читал'], ['يَقْرَأُ','Читает'], ['القُرْآنَ','Коран'],
+  ['مَا شَاءَ اللَّه','Как пожелал Аллах'], ['مَسْجِدٌ','Мечеть'], ['مُصَلًّى','Молельня'], ['مِعْطَفٌ','Пальто'], ['مُعَلِّمَةٌ','Учительница'],
+  ['مَنْ','Кто'], ['نَظَّارَةٌ','Очки'], ['هُ','Его'], ['هَا','Её'], ['هَيَّا بِنَا','Пойдём'],
+  ['وَالِدٌ','Отец'], ['وَالِدَةٌ','Мать'], ['يَا','О']
+];
+
+let queue = [];
+let current = null;
+let currentBackPage = 'home';
+let totalInLesson = 0;
+
+function $(id) { return document.getElementById(id); }
+
+// Навигация
+function showPage(id) {
+    document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+    $(id).classList.remove('hidden');
+    if(id === 'books') renderParts();
+}
+
+// Рендер Частей
+function renderParts() {
+    let html = '';
+    for(let i=1; i<=1; i++) {
+        html += `<div class="unitBox">
+            <b>Часть ${i}</b><br>
+            <button class="btn" style="margin-top:10px" onclick="openPart(${i})">Открыть</button>
+        </div>`;
+    }
+    $('partsList').innerHTML = html;
+}
+
+// Рендер Вахьдатов
+function openPart(p) {
+    let html = '';
+    for(let u=1; u<=2; u++) {
+        html += `<div class="unitBox">
+            <b>Вахьда ${u}</b><br>
+            <button class="btn" style="margin-top:10px" onclick="startLesson(${u})">Начать урок</button>
+        </div>`;
+    }
+    $('unitsList').innerHTML = html;
+    showPage('units');
+}
+
+// Старт урока
+function startLesson(u) {
+    const words = (u === 1) ? unit1 : unit2;
+    queue = [...words].sort(() => Math.random() - 0.5);
+    totalInLesson = queue.length;
+    currentBackPage = 'units';
+    showPage('study');
+    nextCard();
+}
+
+// Следующая карта
+function nextCard() {
+    if (queue.length === 0) {
+        $('front').innerText = '✅';
+        $('back').innerText = 'Урок окончен!';
+        $('progressBar').style.width = '100%';
+        current = null;
+        return;
+    }
+    current = queue.shift();
+    $('front').innerText = current[0];
+    $('back').innerText = '';
+    
+    let progress = ((totalInLesson - queue.length - 1) / totalInLesson) * 100;
+    $('progressBar').style.width = progress + '%';
+}
+
+function flipCard() {
+    if(current) $('back').innerText = current[1];
+}
+
+function rate() {
+    if(current) nextCard();
+    else showPage('units');
+}
+
+function backToSource() {
+    showPage(currentBackPage);
+}
+
+// Старт приложения
+showPage('home');
+</script>
+
+</body>
+</html>
