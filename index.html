@@ -1,166 +1,232 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Darul Hadis Pro</title>
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --accent: #3498db;
-            --bg: #f4f7f6;
-        }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        body { 
-            margin: 0; 
-            font-family: sans-serif; 
-            background: var(--bg); 
-            display: flex; 
-            flex-direction: column; 
-            height: 100vh; 
-            overflow: hidden; 
-        }
-
-        /* Заголовок */
-        .header { 
-            background: var(--primary); 
-            color: white; 
-            padding: 15px; 
-            text-align: center; 
-            font-weight: bold; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        /* Контент */
-        .main-content { 
-            flex: 1; 
-            overflow-y: auto; 
-            padding: 15px; 
-            padding-bottom: 80px; 
-        }
-
-        .view { display: none; }
-        .view.active { display: block; }
-
-        .card { 
-            background: white; 
-            padding: 20px; 
-            border-radius: 12px; 
-            margin-bottom: 15px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
-        }
-
-        /* Арабский текст */
-        .arabic { 
-            direction: rtl; 
-            font-size: 24px; 
-            text-align: right; 
-            margin: 10px 0;
-            color: #2c3e50;
-        }
-
-        /* Навигация */
-        .nav { 
-            position: fixed; 
-            bottom: 0; 
-            width: 100%; 
-            display: flex; 
-            background: white; 
-            border-top: 1px solid #ddd; 
-            padding-bottom: env(safe-area-inset-bottom);
-        }
-
-        .nav-btn { 
-            flex: 1; 
-            padding: 15px 5px; 
-            border: none; 
-            background: none; 
-            font-size: 12px; 
-            color: #7f8c8d; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center;
-        }
-
-        .nav-btn.active { color: var(--accent); font-weight: bold; }
-        .nav-icon { font-size: 20px; margin-bottom: 2px; }
-
-        button.action-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            width: 100%;
-            font-size: 16px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Darul Hadis Pro</title>
+<style>
+:root{
+  --bg:#f3f7f5;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --line:#e5e7eb;
+  --green:#14532d;
+  --green2:#166534;
+  --soft:#e7f3ec;
+  --danger:#dc2626;
+  --shadow:0 10px 24px rgba(0,0,0,.07);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+header{padding:18px 18px 8px;font-size:32px;font-weight:900;letter-spacing:-.2px}
+.sub{padding:0 18px 12px;color:var(--muted);font-size:13px}
+.wrap{max-width:940px;margin:auto;padding:12px 12px 140px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin:12px 0;box-shadow:var(--shadow)}
+.hero{background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;border:0}
+.title{font-size:26px;font-weight:900;line-height:1.15}
+.title2{font-size:20px;font-weight:900;line-height:1.2}
+.title3{font-size:17px;font-weight:900;line-height:1.2}
+.small{font-size:13px;color:var(--muted)}
+.tiny{font-size:12px;color:var(--muted)}
+.hr{height:1px;background:var(--line);margin:12px 0}
+.hidden{display:none !important}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{width:100%;min-height:52px;padding:14px;border:0;border-radius:18px;font-size:16px;font-weight:800;cursor:pointer;transition:transform .12s ease}
+.btn:active{transform:scale(.97)}
+.green{background:var(--green);color:#fff}
+.soft{background:var(--soft);color:#0f172a}
+.red{background:var(--danger);color:#fff}
+.light{background:#f3f4f6;color:#111827}
+input,select{width:100%;min-height:52px;padding:14px;border:1px solid #d1d5db;border-radius:16px;margin-bottom:10px;outline:none}
+.nav{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);padding:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;box-shadow:0 -8px 24px rgba(0,0,0,.08);z-index:9999}
+.ar{font-size:42px;text-align:center;direction:rtl;margin:20px 0;line-height:1.6;font-family:serif}
+.progress-container{height:8px;background:#e5e7eb;border-radius:10px;overflow:hidden;margin:10px 0}
+#progressBar{height:100%;width:0%;background:var(--green);transition:width 0.3s}
+</style>
 </head>
 <body>
 
-    <div class="header" id="header-title">Darul Hadis Pro</div>
+<header>دار الحديث</header>
+<div class="sub">Darul Hadis Pro • Твой тренажер арабского</div>
 
-    <div class="main-content">
-        <div id="home" class="view active">
-            <div class="card">
-                <h3>Твой прогресс</h3>
-                <p>Сегодня выучено слов: 0</p>
-                <button class="action-btn" onclick="showView('study')">Начать учиться</button>
-            </div>
-        </div>
-
-        <div id="study" class="view">
-            <div class="card">
-                <div class="arabic">صِلَةُ الْمَوْصُولِ</div>
-                <p><b>Тема:</b> Грамматика (Силятуль мавсуль)</p>
-                <hr>
-                <p>Пример из поэзии Ан-Набиги:</p>
-                <div class="arabic">فَإِنَّكَ كَاللَّيْلِ الَّذِي هُوَ مُدْرِكِي</div>
-            </div>
-        </div>
-
-        <div id="library" class="view">
-            <div class="card">
-                <h3>Библиотека</h3>
-                <p>Твои сохраненные материалы появятся здесь.</p>
-            </div>
-        </div>
+<div class="wrap">
+  <section id="home">
+    <div class="card hero">
+      <div class="title">С возвращением!</div>
+      <div class="small" style="color:rgba(255,255,255,0.8)">Готов продолжить обучение?</div>
     </div>
+    <div class="grid2">
+      <div class="card" onclick="showPage('studyHub')">
+        <div class="title3">Учить</div>
+        <div class="small">Вахьдаты и слова</div>
+      </div>
+      <div class="card" onclick="showPage('stats')">
+        <div class="title3">Прогресс</div>
+        <div id="quickStat" class="small">0 слов</div>
+      </div>
+    </div>
+  </section>
 
-    <nav class="nav">
-        <button class="nav-btn active" onclick="showView('home', this)">
-            <span class="nav-icon">🏠</span>Главная
-        </button>
-        <button class="nav-btn" onclick="showView('study', this)">
-            <span class="nav-icon">📚</span>Учеба
-        </button>
-        <button class="nav-btn" onclick="showView('library', this)">
-            <span class="nav-icon">📖</span>Книги
-        </button>
-    </nav>
+  <section id="studyHub" class="hidden">
+    <div class="card">
+      <div class="title2">Разделы</div>
+      <div class="hr"></div>
+      <div class="list">
+        <button class="btn green" onclick="openUnit(1)">Вахьда 1 (Приветствие)</button>
+        <div style="height:10px"></div>
+        <button class="btn green" onclick="openUnit(2)">Вахьда 2 (Семья)</button>
+        <div style="height:10px"></div>
+        <button class="btn soft" onclick="openHardWords()">Трудные слова</button>
+      </div>
+      <div class="hr"></div>
+      <button class="btn light" onclick="showPage('home')">Назад</button>
+    </div>
+  </section>
 
-    <script>
-        function showView(viewId, btn) {
-            // Скрываем все вкладки
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            // Убираем активный класс у кнопок
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            
-            // Показываем нужную
-            document.getElementById(viewId).classList.add('active');
-            
-            // Если нажата кнопка в меню, подсвечиваем её
-            if (btn) {
-                btn.classList.add('active');
-            } else {
-                // Если переход по кнопке "Начать", подсвечиваем иконку в меню
-                document.querySelectorAll('.nav-btn')[1].classList.add('active');
-                document.querySelectorAll('.nav-btn')[0].classList.remove('active');
-            }
-        }
-    </script>
+  <section id="study" class="hidden">
+    <div class="card">
+      <div id="studyTitle" class="title3" style="text-align:center">Урок</div>
+      <div class="progress-container"><div id="progressBar"></div></div>
+      
+      <div id="front" class="ar">---</div>
+      <div id="back" class="small" style="text-align:center; min-height:20px; color:var(--green); font-weight:bold"></div>
+      
+      <div class="hr"></div>
+      <button id="flipBtn" class="btn green" onclick="flipCard()">Показать ответ</button>
+      
+      <div id="controls" class="grid2 hidden">
+        <button class="btn light" onclick="rate('hard')">Трудно</button>
+        <button class="btn green" onclick="rate('easy')">Знаю</button>
+      </div>
+      <br>
+      <button class="btn light" onclick="showPage('studyHub')">Выйти</button>
+    </div>
+  </section>
+
+  <section id="stats" class="hidden">
+    <div class="card">
+      <div class="title2">Твои успехи</div>
+      <div class="hr"></div>
+      <p>Изучено слов: <b id="st_studied">0</b></p>
+      <p>Трудных слов: <b id="st_hard">0</b></p>
+      <button class="btn red" onclick="clearData()">Сбросить прогресс</button>
+    </div>
+  </section>
+</div>
+
+<nav class="nav">
+  <button class="btn light" onclick="showPage('home')">🏠</button>
+  <button class="btn light" onclick="showPage('studyHub')">📚</button>
+  <button class="btn light" onclick="showPage('stats')">📊</button>
+</nav>
+
+<script>
+'use strict';
+
+// Данные
+const unit1 = [['أَهْلًا وَسَهْلًا','Добро пожаловать'], ['كَيْفَ حَالُكَ؟','Как дела?'], ['مُدَرِّسٌ','Учитель'], ['طَبِيبَةٌ','Врач']];
+const unit2 = [['أُسْرَةٌ','Семья'], ['أَبٌ','Отец'], ['أُمٌّ','Мать'], ['جَدٌّ','Дедушка']];
+
+let state = {
+  studied: parseInt(localStorage.getItem('dhp_count') || '0'),
+  hard: JSON.parse(localStorage.getItem('dhp_hard') || '[]'),
+};
+
+let queue = [];
+let currentWord = null;
+
+function $(id) { return document.getElementById(id); }
+
+function showPage(id) {
+  ['home', 'studyHub', 'study', 'stats'].forEach(p => $(p).classList.add('hidden'));
+  $(id).classList.remove('hidden');
+  updateStats();
+}
+
+function openUnit(num) {
+  const words = (num === 1) ? unit1 : unit2;
+  startSession(words, 'Вахьда ' + num);
+}
+
+function openHardWords() {
+  if (state.hard.length === 0) return alert('Список трудных слов пуст!');
+  startSession(state.hard, 'Трудные слова');
+}
+
+function startSession(words, title) {
+  queue = [...words].sort(() => Math.random() - 0.5);
+  $('studyTitle').innerText = title;
+  showPage('study');
+  nextCard();
+}
+
+function nextCard() {
+  if (queue.length === 0) {
+    $('front').innerText = '☕';
+    $('back').innerText = 'Урок окончен!';
+    $('flipBtn').classList.add('hidden');
+    $('controls').classList.add('hidden');
+    return;
+  }
+  currentWord = queue.shift();
+  $('front').innerText = currentWord[0];
+  $('back').innerText = '';
+  $('flipBtn').classList.remove('hidden');
+  $('controls').classList.add('hidden');
+  
+  // Обновляем прогресс-бар (примерный)
+  $('progressBar').style.width = '30%'; 
+}
+
+function flipCard() {
+  $('back').innerText = currentWord[1];
+  $('flipBtn').classList.add('hidden');
+  $('controls').classList.remove('hidden');
+}
+
+function rate(type) {
+  state.studied++;
+  if (type === 'hard') {
+    if (!state.hard.some(w => w[0] === currentWord[0])) {
+      state.hard.push(currentWord);
+    }
+  }
+  save();
+  nextCard();
+}
+
+function save() {
+  localStorage.setItem('dhp_count', state.studied);
+  localStorage.setItem('dhp_hard', JSON.stringify(state.hard));
+}
+
+function updateStats() {
+  $('st_studied').innerText = state.studied;
+  $('st_hard').innerText = state.hard.length;
+  $('quickStat').innerText = state.studied + ' слов выучено';
+}
+
+function clearData() {
+  if (confirm('Удалить весь прогресс?')) {
+    localStorage.clear();
+    location.reload();
+  }
+}
+
+// Делаем функции глобальными для onclick
+window.showPage = showPage;
+window.openUnit = openUnit;
+window.openHardWords = openHardWords;
+window.flipCard = flipCard;
+window.rate = rate;
+window.clearData = clearData;
+
+// Инициализация
+updateStats();
+
+</script>
 </body>
 </html>
