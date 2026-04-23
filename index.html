@@ -1,551 +1,1831 @@
 <!DOCTYPE html>
-<html lang="ru">
+
+<html lang="ru" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#0E7C54" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A0F0D" media="(prefers-color-scheme: dark)">
 <title>Darul Hadis Pro</title>
 <style>
+/* ============================================================
+   DESIGN TOKENS — светлая и тёмная темы
+   ============================================================ */
 :root{
-  --bg:#f3f7f5;
-  --card:#ffffff;
-  --text:#111827;
-  --muted:#6b7280;
-  --line:#e5e7eb;
-  --green:#14532d;
-  --green2:#166534;
-  --soft:#e7f3ec;
-  --danger:#dc2626;
-  --shadow:0 10px 24px rgba(0,0,0,.07);
-  --radius:22px;
+  /* Brand */
+  --brand-600:#0E7C54;
+  --brand-500:#14A272;
+  --brand-400:#2CC48A;
+  --brand-100:#E6F5EE;
+  --brand-050:#F1FAF5;
+
+/* Semantic */
+–danger:#DC2626;
+–warn:#D97706;
+–success:#16A34A;
+
+/* Neutral — Light */
+–bg:#FFFFFF;
+–bg-soft:#F7F9F8;
+–surface:#FFFFFF;
+–surface-2:#F4F6F5;
+–border:#E4E8EA;
+–border-strong:#D0D5D7;
+–text:#0F1512;
+–text-2:#4A5259;
+–text-3:#8A9097;
+–muted:#B5BABE;
+–overlay:rgba(15,21,18,.45);
+
+/* Shadows */
+–s-1:0 1px 2px rgba(15,21,18,.04), 0 1px 1px rgba(15,21,18,.03);
+–s-2:0 4px 14px rgba(15,21,18,.06), 0 2px 4px rgba(15,21,18,.04);
+–s-3:0 12px 32px rgba(15,21,18,.10), 0 4px 10px rgba(15,21,18,.05);
+–s-brand:0 10px 24px rgba(14,124,84,.22);
+
+/* Radii */
+–r-sm:10px;
+–r-md:14px;
+–r-lg:20px;
+–r-xl:26px;
+–r-pill:999px;
+
+/* Motion */
+–ease:cubic-bezier(.2,.8,.2,1);
+–ease-out:cubic-bezier(.16,1,.3,1);
+–dur-1:140ms;
+–dur-2:220ms;
+–dur-3:360ms;
+
+/* Typography */
+–font-ui: -apple-system, BlinkMacSystemFont, “SF Pro Text”, “Inter”, “Segoe UI”, Roboto, system-ui, sans-serif;
+–font-display: -apple-system, BlinkMacSystemFont, “SF Pro Display”, “Inter”, “Segoe UI”, system-ui, sans-serif;
+–font-ar: “SF Arabic”, “Geeza Pro”, “Noto Naskh Arabic”, “Amiri”, “Scheherazade New”, “Traditional Arabic”, serif;
+
+/* Safe areas */
+–sa-top: env(safe-area-inset-top, 0px);
+–sa-bot: env(safe-area-inset-bottom, 0px);
 }
-*{box-sizing:border-box}
+
+html[data-theme=“dark”]{
+–brand-600:#2CC48A;
+–brand-500:#27B880;
+–brand-400:#3CD796;
+–brand-100:#12291F;
+–brand-050:#0E1F17;
+
+–bg:#0A0F0D;
+–bg-soft:#0F1512;
+–surface:#151B18;
+–surface-2:#1B2220;
+–border:#252C29;
+–border-strong:#333B37;
+–text:#F2F5F3;
+–text-2:#B6BDB9;
+–text-3:#7A827D;
+–muted:#4E5651;
+–overlay:rgba(0,0,0,.55);
+
+–s-1:0 1px 2px rgba(0,0,0,.3);
+–s-2:0 6px 16px rgba(0,0,0,.35);
+–s-3:0 14px 34px rgba(0,0,0,.5);
+–s-brand:0 10px 24px rgba(44,196,138,.2);
+}
+
+/* ============================================================
+RESET
+============================================================ */
+*,*::before,*::after{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
-header{padding:18px 18px 8px;font-size:32px;font-weight:900;letter-spacing:-.2px}
-.sub{padding:0 18px 12px;color:var(--muted);font-size:13px}
-.wrap{max-width:940px;margin:auto;padding:12px 12px 140px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin:12px 0;box-shadow:var(--shadow)}
-.hero{background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;border:0}
-.title{font-size:26px;font-weight:900;line-height:1.15}
-.title2{font-size:20px;font-weight:900;line-height:1.2}
-.title3{font-size:17px;font-weight:900;line-height:1.2}
-.small{font-size:13px;color:var(--muted)}
-.tiny{font-size:12px;color:var(--muted)}
-.hr{height:1px;background:var(--line);margin:12px 0}
-.hidden{display:none !important}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.list{display:flex;flex-direction:column;gap:12px}
-.btn{width:100%;min-height:52px;padding:14px;border:0;border-radius:18px;font-size:16px;font-weight:800;cursor:pointer;transition:transform .12s ease,opacity .12s ease,background .12s ease}
+body{
+margin:0;
+background:var(–bg);
+color:var(–text);
+font-family:var(–font-ui);
+font-size:15px;
+line-height:1.45;
+-webkit-font-smoothing:antialiased;
+-moz-osx-font-smoothing:grayscale;
+text-rendering:optimizeLegibility;
+overscroll-behavior-y:contain;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:0;padding:0;cursor:pointer}
+input,select,textarea{background:none;border:0;outline:0}
+a{color:inherit;text-decoration:none}
+::selection{background:var(–brand-100);color:var(–brand-600)}
+
+/* ============================================================
+LAYOUT SHELL
+============================================================ */
+.app{
+min-height:100dvh;
+min-height:100vh;
+padding-top: calc(var(–sa-top) + 8px);
+padding-bottom: calc(76px + var(–sa-bot));
+max-width: 560px;
+margin: 0 auto;
+position: relative;
+}
+.screen{
+padding: 0 16px 24px;
+opacity:0;
+transform:translateY(6px);
+animation: screenIn var(–dur-2) var(–ease-out) forwards;
+}
+.screen.hidden{display:none}
+@keyframes screenIn{
+to{opacity:1;transform:translateY(0)}
+}
+
+/* Top bar */
+.topbar{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding: 8px 16px 14px;
+gap:10px;
+}
+.topbar .title-xl{
+font-family:var(–font-display);
+font-weight:800;
+font-size:28px;
+letter-spacing:-0.02em;
+}
+.topbar .title-ar{
+font-family:var(–font-ar);
+font-size:30px;
+font-weight:700;
+letter-spacing:-.01em;
+direction:rtl;
+}
+.icon-btn{
+width:40px;height:40px;
+border-radius:var(–r-pill);
+background:var(–surface-2);
+display:grid;place-items:center;
+color:var(–text);
+transition:transform var(–dur-1) var(–ease), background var(–dur-1) var(–ease);
+}
+.icon-btn:active{transform:scale(.92);background:var(–border)}
+.icon-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ============================================================
+TYPOGRAPHY HELPERS
+============================================================ */
+.h1{font-family:var(–font-display);font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.h2{font-family:var(–font-display);font-size:22px;font-weight:800;letter-spacing:-.015em;line-height:1.2}
+.h3{font-size:17px;font-weight:700;letter-spacing:-.005em;line-height:1.25}
+.h4{font-size:15px;font-weight:700;line-height:1.3}
+.body{font-size:15px;color:var(–text);line-height:1.45}
+.muted{color:var(–text-3);font-size:13px;line-height:1.4}
+.tiny{font-size:12px;color:var(–text-3);letter-spacing:.01em}
+.eyebrow{
+font-size:11px;
+font-weight:700;
+letter-spacing:.12em;
+text-transform:uppercase;
+color:var(–text-3);
+}
+
+/* ============================================================
+SECTIONS / CARDS
+============================================================ */
+.section{margin: 18px 0}
+.section-head{
+display:flex;align-items:center;justify-content:space-between;
+padding: 0 2px 10px;
+}
+.section-head .link{
+color:var(–brand-600);font-size:13px;font-weight:600;
+}
+
+.card{
+background:var(–surface);
+border:1px solid var(–border);
+border-radius:var(–r-lg);
+padding:16px;
+box-shadow:var(–s-1);
+}
+
+.tile{
+background:var(–surface);
+border:1px solid var(–border);
+border-radius:var(–r-lg);
+padding:16px;
+display:flex;
+flex-direction:column;
+gap:8px;
+min-height:116px;
+transition:transform var(–dur-1) var(–ease), box-shadow var(–dur-2) var(–ease), border-color var(–dur-1) var(–ease);
+text-align:left;
+width:100%;
+position:relative;
+overflow:hidden;
+}
+.tile:active{transform:scale(.985)}
+.tile .tile-ico{
+width:36px;height:36px;border-radius:12px;
+display:grid;place-items:center;
+background:var(–brand-100);color:var(–brand-600);
+margin-bottom:4px;
+}
+.tile .tile-ico svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tile .tile-title{font-weight:700;font-size:15px;line-height:1.25}
+.tile .tile-sub{font-size:12.5px;color:var(–text-3)}
+.tile.locked{opacity:.65}
+.tile.locked .tile-ico{background:var(–surface-2);color:var(–text-3)}
+
+/* Hero */
+.hero{
+border-radius:var(–r-xl);
+background:linear-gradient(140deg, var(–brand-600) 0%, var(–brand-500) 50%, var(–brand-400) 100%);
+color:#fff;
+padding:22px 20px 20px;
+position:relative;
+overflow:hidden;
+box-shadow:var(–s-brand);
+}
+.hero::before{
+content:””;
+position:absolute;inset:0;
+background:
+radial-gradient(140% 80% at 100% 0%, rgba(255,255,255,.18), transparent 60%),
+radial-gradient(80% 60% at 0% 100%, rgba(0,0,0,.12), transparent 60%);
+pointer-events:none;
+}
+.hero .eyebrow{color:rgba(255,255,255,.85)}
+.hero .h2{color:#fff}
+.hero .row{
+display:grid;grid-template-columns:1fr 1fr 1fr;
+gap:8px;
+margin-top:14px;
+}
+.hero .stat-chip{
+background:rgba(255,255,255,.14);
+border:1px solid rgba(255,255,255,.18);
+border-radius:14px;
+padding:10px 10px;
+backdrop-filter: blur(8px);
+}
+.hero .stat-chip .n{font-family:var(–font-display);font-weight:800;font-size:20px;line-height:1}
+.hero .stat-chip .l{font-size:11px;opacity:.9;margin-top:3px}
+.hero .cta{
+margin-top:16px;
+display:flex;gap:10px;
+}
+.btn-hero{
+flex:1;
+min-height:46px;
+border-radius:14px;
+background:#fff;
+color:var(–brand-600);
+font-weight:700;
+font-size:15px;
+display:inline-flex;align-items:center;justify-content:center;gap:8px;
+transition:transform var(–dur-1) var(–ease);
+box-shadow: 0 6px 16px rgba(0,0,0,.12);
+}
+.btn-hero.ghost{
+background:rgba(255,255,255,.14);
+color:#fff;
+border:1px solid rgba(255,255,255,.28);
+box-shadow:none;
+}
+.btn-hero:active{transform:scale(.98)}
+.btn-hero svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+/* Grids */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.stack{display:flex;flex-direction:column;gap:12px}
+.stack-sm{display:flex;flex-direction:column;gap:8px}
+.row{display:flex;align-items:center;gap:10px}
+
+/* ============================================================
+BUTTONS
+============================================================ */
+.btn{
+min-height:48px;
+padding: 0 16px;
+border-radius:14px;
+display:inline-flex;align-items:center;justify-content:center;gap:8px;
+font-weight:700;
+font-size:15px;
+letter-spacing:-.005em;
+transition:transform var(–dur-1) var(–ease), background var(–dur-1) var(–ease), color var(–dur-1) var(–ease), box-shadow var(–dur-1) var(–ease);
+width:100%;
+user-select:none;
+-webkit-tap-highlight-color:transparent;
+}
 .btn:active{transform:scale(.985)}
-.green{background:var(--green);color:#fff}
-.green:hover{background:var(--green2)}
-.light{background:#f3f4f6;color:#111827}
-.soft{background:var(--soft);color:#0f172a}
-.red{background:var(--danger);color:#fff}
-input,select{width:100%;min-height:52px;padding:14px;border:1px solid #d1d5db;border-radius:16px;margin-bottom:10px;background:#fff;outline:none}
-input:focus,select:focus{border-color:rgba(20,83,45,.45);box-shadow:0 0 0 4px rgba(20,83,45,.08)}
-.nav{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);padding:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;box-shadow:0 -8px 24px rgba(0,0,0,.08)}
-.stat{font-size:28px;font-weight:900;margin-top:6px}
-.ar{font-size:46px;text-align:center;direction:rtl;margin:18px 0;line-height:1.5;word-break:break-word}
-.deck{border:1px solid var(--line);border-radius:18px;padding:14px;margin:10px 0;background:#fff}
-.unitBox{border:1px solid var(--line);border-radius:18px;padding:14px;background:#fff}
-.badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#eef7f1;color:var(--green);font-size:12px;font-weight:800}
-.progress{height:10px;border-radius:999px;background:#e5e7eb;overflow:hidden}
-.progress > div{height:100%;width:0%;background:linear-gradient(90deg,var(--green),#22c55e)}
-.wordList{display:flex;flex-direction:column;gap:10px}
-.wordRow{border:1px solid var(--line);border-radius:18px;padding:14px;background:#fff}
-.wordRow .arSmall{font-size:24px;direction:rtl;text-align:right;font-weight:900;line-height:1.25}
-.wordRow .ru{font-size:14px;color:var(--muted);margin-top:6px}
-@media(max-width:720px){.grid2,.grid3{grid-template-columns:1fr 1fr}.ar{font-size:40px}}
-@media(max-width:420px){.grid2,.grid3,.nav{grid-template-columns:1fr 1fr}.ar{font-size:38px}}
+.btn-primary{background:var(–brand-600);color:#fff;box-shadow:var(–s-brand)}
+.btn-primary:active{background:var(–brand-500)}
+.btn-secondary{background:var(–surface-2);color:var(–text);border:1px solid var(–border)}
+.btn-secondary:active{background:var(–border)}
+.btn-ghost{background:transparent;color:var(–text)}
+.btn-danger{background:transparent;color:var(–danger);border:1px solid color-mix(in srgb, var(–danger) 30%, transparent)}
+.btn-danger:active{background:color-mix(in srgb, var(–danger) 10%, transparent)}
+
+.btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.btn-row{display:flex;gap:10px}
+.btn-row .btn{flex:1}
+
+.chip{
+display:inline-flex;align-items:center;gap:6px;
+padding:6px 10px;
+font-size:12px;
+font-weight:600;
+border-radius:var(–r-pill);
+background:var(–surface-2);
+color:var(–text-2);
+border:1px solid var(–border);
+}
+.chip.on{background:var(–brand-100);color:var(–brand-600);border-color:color-mix(in srgb, var(–brand-600) 25%, transparent)}
+.chip.danger{background:color-mix(in srgb, var(–danger) 10%, transparent);color:var(–danger);border-color:color-mix(in srgb, var(–danger) 25%, transparent)}
+.chip.warn{background:color-mix(in srgb, var(–warn) 12%, transparent);color:var(–warn);border-color:color-mix(in srgb, var(–warn) 25%, transparent)}
+
+/* ============================================================
+INPUTS
+============================================================ */
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.field label{font-size:12.5px;color:var(–text-3);font-weight:600;padding-left:4px}
+.input, .select, .textarea{
+width:100%;
+min-height:50px;
+padding:14px 14px;
+border-radius:14px;
+background:var(–surface-2);
+border:1px solid var(–border);
+color:var(–text);
+font-size:16px; /* no iOS zoom */
+transition:border-color var(–dur-1) var(–ease), background var(–dur-1) var(–ease);
+}
+.textarea{min-height:110px;padding:12px 14px;resize:vertical;line-height:1.45}
+.input:focus, .select:focus, .textarea:focus{
+outline:none;
+border-color:var(–brand-500);
+background:var(–surface);
+}
+.input.ar, .textarea.ar{direction:rtl;text-align:right;font-family:var(–font-ar);font-size:20px;min-height:56px}
+
+.search-box{
+display:flex;align-items:center;gap:8px;
+background:var(–surface-2);
+border:1px solid var(–border);
+border-radius:var(–r-pill);
+padding:0 12px 0 14px;
+min-height:44px;
+}
+.search-box svg{width:16px;height:16px;color:var(–text-3);stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.search-box input{
+flex:1;background:none;border:0;outline:0;min-height:44px;font-size:15px;color:var(–text);
+}
+
+/* ============================================================
+BOTTOM NAV
+============================================================ */
+.bottom-nav{
+position:fixed;
+left:0;right:0;
+bottom:0;
+padding: 8px 12px calc(8px + var(–sa-bot));
+background: color-mix(in srgb, var(–bg) 92%, transparent);
+backdrop-filter: saturate(1.4) blur(20px);
+-webkit-backdrop-filter: saturate(1.4) blur(20px);
+border-top:1px solid var(–border);
+z-index:40;
+}
+.bottom-nav .inner{
+max-width:560px;margin:auto;
+display:grid;grid-template-columns:repeat(4,1fr);gap:4px;
+}
+.nav-btn{
+padding:8px 4px 6px;
+border-radius:14px;
+display:flex;flex-direction:column;align-items:center;gap:3px;
+color:var(–text-3);
+transition:color var(–dur-1) var(–ease), background var(–dur-1) var(–ease);
+}
+.nav-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nav-btn .lbl{font-size:10.5px;font-weight:600;letter-spacing:.01em}
+.nav-btn.active{color:var(–brand-600)}
+.nav-btn.active .lbl{color:var(–brand-600)}
+
+/* ============================================================
+PROGRESS
+============================================================ */
+.progress{
+height:8px;
+background:var(–surface-2);
+border-radius:var(–r-pill);
+overflow:hidden;
+}
+.progress > i{
+display:block;height:100%;
+width:0%;
+background:linear-gradient(90deg,var(–brand-500),var(–brand-400));
+border-radius:inherit;
+transition:width var(–dur-3) var(–ease-out);
+}
+.progress.thin{height:5px}
+
+.ring{
+–size:48px;
+–val:0;
+width:var(–size);height:var(–size);
+border-radius:50%;
+background: conic-gradient(var(–brand-500) calc(var(–val)*1%), var(–surface-2) 0);
+display:grid;place-items:center;
+position:relative;
+flex:0 0 auto;
+}
+.ring::before{
+content:””;
+position:absolute;inset:4px;
+border-radius:50%;
+background:var(–surface);
+}
+.ring > span{
+position:relative;z-index:1;
+font-size:11px;font-weight:700;color:var(–text);
+}
+
+/* ============================================================
+LIST ROWS
+============================================================ */
+.row-tap{
+display:flex;align-items:center;gap:12px;
+padding:14px;
+background:var(–surface);
+border:1px solid var(–border);
+border-radius:var(–r-lg);
+transition:transform var(–dur-1) var(–ease), background var(–dur-1) var(–ease);
+width:100%;
+text-align:left;
+}
+.row-tap:active{transform:scale(.99);background:var(–surface-2)}
+.row-tap .lead{
+width:42px;height:42px;border-radius:12px;
+display:grid;place-items:center;flex:0 0 auto;
+background:var(–brand-100);color:var(–brand-600);
+font-weight:800;font-size:15px;
+letter-spacing:-.02em;
+}
+.row-tap .body-col{flex:1;min-width:0}
+.row-tap .t{font-weight:700;font-size:15px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-tap .s{font-size:12.5px;color:var(–text-3);margin-top:2px}
+.row-tap .trail{display:flex;align-items:center;gap:8px;color:var(–text-3);flex:0 0 auto}
+.row-tap .trail svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.row-tap.locked .lead{background:var(–surface-2);color:var(–text-3)}
+.row-tap.locked{opacity:.7}
+
+/* Word row */
+.word-row{
+display:flex;align-items:center;gap:12px;
+padding:12px 14px;
+background:var(–surface);
+border:1px solid var(–border);
+border-radius:var(–r-lg);
+}
+.word-row .ar{
+font-family:var(–font-ar);
+direction:rtl;
+font-size:22px;
+font-weight:700;
+line-height:1.3;
+flex:1;min-width:0;
+text-align:right;
+white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.word-row .ru{
+color:var(–text-2);
+font-size:14px;
+flex:1;min-width:0;
+white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.word-row .fav{color:var(–text-3);padding:6px}
+.word-row .fav.on{color:#E8A83A}
+.word-row .fav svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.word-row .fav.on svg{fill:currentColor;stroke:currentColor}
+
+/* Checkable rows */
+.check-row{
+display:flex;align-items:center;gap:12px;
+padding:14px;
+background:var(–surface);
+border:1px solid var(–border);
+border-radius:var(–r-lg);
+cursor:pointer;
+transition:border-color var(–dur-1) var(–ease), background var(–dur-1) var(–ease);
+}
+.check-row.on{
+border-color: var(–brand-500);
+background: var(–brand-050);
+}
+.check-row .cbox{
+width:22px;height:22px;flex:0 0 auto;
+border-radius:7px;
+border:1.5px solid var(–border-strong);
+display:grid;place-items:center;
+background:var(–surface);
+transition:background var(–dur-1) var(–ease), border-color var(–dur-1) var(–ease);
+}
+.check-row.on .cbox{background:var(–brand-500);border-color:var(–brand-500)}
+.check-row .cbox svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0;transform:scale(.6);transition:opacity var(–dur-1) var(–ease), transform var(–dur-1) var(–ease)}
+.check-row.on .cbox svg{opacity:1;transform:scale(1)}
+.check-row .cb-label{flex:1;font-weight:600;font-size:14.5px}
+.check-row .cb-meta{font-size:12px;color:var(–text-3)}
+
+/* ============================================================
+FLASHCARD (STUDY SCREEN)
+============================================================ */
+.study-top{
+display:flex;align-items:center;gap:12px;
+margin-bottom:14px;
+}
+.study-top .progress{flex:1}
+.study-top .count{font-size:12px;color:var(–text-3);font-weight:700;white-space:nowrap}
+
+.flashcard{
+background: var(–surface);
+border:1px solid var(–border);
+border-radius: var(–r-xl);
+padding: 28px 20px;
+min-height: 300px;
+display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+box-shadow: var(–s-2);
+position:relative;
+overflow:hidden;
+}
+.flashcard::before{
+content:””;position:absolute;inset:0;pointer-events:none;
+background:
+radial-gradient(120% 80% at 50% 0%, color-mix(in srgb, var(–brand-500) 10%, transparent), transparent 60%);
+}
+.flashcard .fc-ar{
+font-family:var(–font-ar);
+direction:rtl;
+font-size: clamp(40px, 11vw, 56px);
+font-weight:700;
+line-height:1.45;
+text-align:center;
+word-break: break-word;
+width:100%;
+color:var(–text);
+}
+.flashcard .fc-divider{
+width:36px;height:3px;border-radius:3px;
+background:var(–border-strong);
+opacity:0;
+transition:opacity var(–dur-2) var(–ease);
+margin: 8px 0;
+}
+.flashcard.revealed .fc-divider{opacity:1}
+.flashcard .fc-ru{
+font-size: 18px;
+color: var(–text-2);
+text-align:center;
+min-height: 26px;
+opacity: 0;
+transform: translateY(6px);
+transition: opacity var(–dur-2) var(–ease), transform var(–dur-2) var(–ease);
+}
+.flashcard.revealed .fc-ru{opacity:1;transform:translateY(0);color:var(–text)}
+.flashcard .fc-hint{
+font-size:12.5px;color:var(–text-3);
+display:inline-flex;align-items:center;gap:6px;
+}
+.flashcard.revealed .fc-hint{opacity:0;pointer-events:none}
+
+.flashcard.swipe-left{transform:translateX(-36%) rotate(-6deg);opacity:0;transition:transform .3s var(–ease), opacity .3s var(–ease)}
+.flashcard.swipe-right{transform:translateX(36%) rotate(6deg);opacity:0;transition:transform .3s var(–ease), opacity .3s var(–ease)}
+.flashcard.swipe-up{transform:translateY(-24%) scale(.98);opacity:0;transition:transform .3s var(–ease), opacity .3s var(–ease)}
+.flashcard.enter{animation: fcEnter var(–dur-3) var(–ease-out)}
+@keyframes fcEnter{
+from{opacity:0;transform:translateY(12px) scale(.98)}
+to{opacity:1;transform:none}
+}
+
+.rate-row{
+display:grid;grid-template-columns:1fr 1fr 1fr;
+gap:8px;
+margin-top:12px;
+}
+.rate{
+min-height:56px;
+border-radius:16px;
+font-weight:700;
+font-size:14.5px;
+color:#fff;
+display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+transition:transform var(–dur-1) var(–ease), filter var(–dur-1) var(–ease);
+}
+.rate:active{transform:scale(.97)}
+.rate .k{font-size:10.5px;font-weight:600;opacity:.9;letter-spacing:.04em;text-transform:uppercase}
+.rate.hard{background:linear-gradient(140deg, #E0464A 0%, #C33034 100%)}
+.rate.ok{background:linear-gradient(140deg, #E59A37 0%, #C77F26 100%)}
+.rate.easy{background:linear-gradient(140deg, #2CBB78 0%, #18935C 100%)}
+
+/* Session summary */
+.summary{
+background:var(–surface);
+border:1px solid var(–border);
+border-radius:var(–r-xl);
+padding:24px 20px;
+text-align:center;
+}
+.summary .big{
+font-family:var(–font-display);
+font-size:40px;font-weight:800;
+background:linear-gradient(90deg,var(–brand-600),var(–brand-400));
+-webkit-background-clip:text;background-clip:text;color:transparent;
+line-height:1;
+}
+.summary .grid-3{margin-top:16px}
+.summary .stat-chip-2{
+background:var(–surface-2);
+border:1px solid var(–border);
+border-radius:14px;
+padding:12px 8px;
+}
+.summary .stat-chip-2 .n{font-weight:800;font-size:18px;line-height:1}
+.summary .stat-chip-2 .l{font-size:11px;color:var(–text-3);margin-top:3px}
+
+/* ============================================================
+STATS / HEATMAP
+============================================================ */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi{
+padding:14px;
+border:1px solid var(–border);
+border-radius:var(–r-lg);
+background:var(–surface);
+}
+.kpi .l{font-size:11.5px;color:var(–text-3);font-weight:600;letter-spacing:.02em;text-transform:uppercase}
+.kpi .v{font-family:var(–font-display);font-weight:800;font-size:24px;margin-top:6px;line-height:1}
+.kpi .d{font-size:12px;color:var(–text-3);margin-top:4px}
+.kpi.accent{background:linear-gradient(140deg,var(–brand-100),var(–brand-050));border-color:color-mix(in srgb, var(–brand-500) 18%, transparent)}
+.kpi.accent .v{color:var(–brand-600)}
+
+.heatmap{
+display:grid;
+grid-template-columns: repeat(13, 1fr);
+gap:4px;
+}
+.heatmap .cell{
+aspect-ratio:1;
+border-radius:4px;
+background:var(–surface-2);
+}
+.heatmap .cell[data-l=“1”]{background: color-mix(in srgb, var(–brand-500) 18%, var(–surface-2))}
+.heatmap .cell[data-l=“2”]{background: color-mix(in srgb, var(–brand-500) 38%, var(–surface-2))}
+.heatmap .cell[data-l=“3”]{background: color-mix(in srgb, var(–brand-500) 62%, var(–surface-2))}
+.heatmap .cell[data-l=“4”]{background: var(–brand-500)}
+.heatmap-legend{
+display:flex;align-items:center;gap:6px;justify-content:flex-end;
+font-size:11px;color:var(–text-3);margin-top:8px;
+}
+.heatmap-legend .sw{width:10px;height:10px;border-radius:3px}
+
+/* ============================================================
+SHEET / MODAL
+============================================================ */
+.sheet-backdrop{
+position:fixed;inset:0;
+background:var(–overlay);
+z-index:50;
+opacity:0;
+pointer-events:none;
+transition:opacity var(–dur-2) var(–ease);
+}
+.sheet-backdrop.on{opacity:1;pointer-events:auto}
+
+.sheet{
+position:fixed;left:0;right:0;bottom:0;
+background:var(–surface);
+border-top-left-radius:24px;
+border-top-right-radius:24px;
+z-index:51;
+transform:translateY(100%);
+transition:transform var(–dur-3) var(–ease-out);
+padding: 10px 16px calc(16px + var(–sa-bot));
+max-height:88vh;
+overflow-y:auto;
+box-shadow: 0 -12px 32px rgba(0,0,0,.18);
+max-width:560px;margin:auto;
+}
+.sheet.on{transform:translateY(0)}
+.sheet .handle{
+width:40px;height:4px;border-radius:3px;
+background:var(–border-strong);
+margin:6px auto 14px;
+}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sheet-head .h2{font-size:20px}
+
+/* Toast */
+.toast{
+position:fixed;
+left:50%;bottom: calc(88px + var(–sa-bot));
+transform:translate(-50%, 20px);
+background:var(–text);
+color:var(–bg);
+padding:10px 16px;
+border-radius:var(–r-pill);
+font-size:13px;font-weight:600;
+box-shadow:var(–s-3);
+opacity:0;
+pointer-events:none;
+z-index:60;
+transition:opacity var(–dur-2) var(–ease), transform var(–dur-2) var(–ease);
+}
+.toast.on{opacity:1;transform:translate(-50%, 0)}
+
+/* ============================================================
+MISC
+============================================================ */
+.divider{height:1px;background:var(–border);margin:14px 0}
+.empty{
+text-align:center;padding:32px 16px;
+color:var(–text-3);
+font-size:14px;
+}
+.empty .icon{
+width:56px;height:56px;border-radius:50%;
+background:var(–surface-2);
+display:grid;place-items:center;
+margin:0 auto 10px;color:var(–text-3);
+}
+.empty .icon svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.badge-lock{
+position:absolute;top:12px;right:12px;
+width:26px;height:26px;border-radius:50%;
+background:var(–surface-2);color:var(–text-3);
+display:grid;place-items:center;
+border:1px solid var(–border);
+}
+.badge-lock svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.pill{
+display:inline-flex;align-items:center;gap:4px;
+padding:3px 8px;font-size:11px;font-weight:700;
+border-radius:var(–r-pill);
+background:var(–brand-100);color:var(–brand-600);
+letter-spacing:.02em;
+}
+
+.segmented{
+display:grid;grid-auto-flow:column;grid-auto-columns:1fr;
+gap:4px;
+padding:4px;
+background:var(–surface-2);
+border:1px solid var(–border);
+border-radius:var(–r-pill);
+}
+.seg{
+min-height:36px;
+padding: 0 10px;
+border-radius:var(–r-pill);
+font-weight:600;font-size:13px;
+color:var(–text-2);
+display:inline-flex;align-items:center;justify-content:center;
+transition:background var(–dur-1) var(–ease), color var(–dur-1) var(–ease);
+}
+.seg.on{background:var(–surface);color:var(–text);box-shadow:var(–s-1)}
+
+/* No scroll under sheet */
+body.sheet-open{overflow:hidden;touch-action:none}
+
+/* Viewport fine-tunes */
+@media (max-width: 380px){
+.flashcard{padding:22px 16px;min-height:270px}
+.rate{min-height:52px}
+.hero{padding:20px 16px}
+}
+
+/* Prevent text selection on taps */
+.btn, .nav-btn, .tile, .row-tap, .chip, .seg, .rate, .icon-btn, .check-row{
+-webkit-user-select:none; user-select:none;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:0;height:0}
 </style>
+
 </head>
 <body>
-<header>دار الحديث</header>
-<div class="sub">Помощник по арабскому: словарь, карточки и обучение</div>
-<div class="wrap">
 
-<section id="home">
-  <div class="card hero">
-    <div class="title">Библиотека</div>
-  </div>
-  <div class="grid2">
-    <div class="card">
-      <div class="title2">بين يديك</div>
-      <br>
-      <button class="btn green" onclick="showPage('books')">Открыть</button>
-    </div>
-    <div class="card">
-      <div class="title2">البناء</div>
-      <div class="small">Скоро</div>
-      <br>
-      <button class="btn soft" onclick="soon()">Открыть</button>
-    </div>
-    <div class="card">
-      <div class="title2">الآجرومية</div>
-      <div class="small">Скоро</div>
-      <br>
-      <button class="btn soft" onclick="soon()">Открыть</button>
-    </div>
-    <div class="card">
-      <div class="title2">الأربعون النووية</div>
-      <div class="small">Скоро</div>
-      <br>
-      <button class="btn soft" onclick="soon()">Открыть</button>
-    </div>
-  </div>
-</section>
+<div class="app" id="app">
 
-<section id="studyHub" class="hidden">
-  <div class="card">
-    <div class="title">Учёба</div>
-    <div class="small">Разделы, колоды, трудные слова и новые слова</div>
-    <div class="hr"></div>
-    <div class="grid2">
-      <div class="card">
-        <div class="title3">Разделы</div>
-        <div class="small">Книга и части</div>
-        <br>
-        <button class="btn green" onclick="showPage('books')">Открыть</button>
+  <!-- ================== HOME ================== -->
+
+  <section id="s-home" class="screen">
+    <div class="topbar">
+      <div class="title-ar">دار الحديث</div>
+      <button type="button" class="icon-btn" data-act="toggle-theme" aria-label="Тема">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+    </div>
+
+```
+<!-- Hero -->
+<div class="hero">
+  <div class="eyebrow">Сегодня</div>
+  <div class="h2" id="home-hero-title">Здравствуй!</div>
+  <div style="opacity:.9;font-size:13.5px;margin-top:2px" id="home-hero-sub">Время для повторения</div>
+
+  <div class="row">
+    <div class="stat-chip"><div class="n" id="hero-due">0</div><div class="l">К повтору</div></div>
+    <div class="stat-chip"><div class="n" id="hero-streak">0</div><div class="l">Серия</div></div>
+    <div class="stat-chip"><div class="n" id="hero-today">0</div><div class="l">Сегодня</div></div>
+  </div>
+
+  <div class="cta">
+    <button type="button" class="btn-hero" data-act="start-due">
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      Повторить
+    </button>
+    <button type="button" class="btn-hero ghost" data-act="continue">
+      <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+      Ещё
+    </button>
+  </div>
+</div>
+
+<!-- Continue last -->
+<div id="continue-block" class="section hidden">
+  <div class="section-head"><div class="eyebrow">Продолжить</div></div>
+  <button type="button" class="row-tap" data-act="continue-last">
+    <div class="lead" id="cl-lead">··</div>
+    <div class="body-col">
+      <div class="t" id="cl-title">—</div>
+      <div class="s" id="cl-sub">—</div>
+    </div>
+    <div class="trail">
+      <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </div>
+  </button>
+</div>
+
+<!-- Library -->
+<div class="section">
+  <div class="section-head"><div class="eyebrow">Библиотека</div></div>
+  <div class="grid-2" id="library-grid"></div>
+</div>
+
+<!-- Quick actions -->
+<div class="section">
+  <div class="section-head"><div class="eyebrow">Быстро</div></div>
+  <div class="grid-2">
+    <button type="button" class="tile" data-go="s-decks">
+      <div class="tile-ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="14" height="16" rx="2"/><path d="M7 4v16M7 8h10"/></svg></div>
+      <div class="tile-title">Мои колоды</div>
+      <div class="tile-sub" id="t-decks-sub">0 колод</div>
+    </button>
+    <button type="button" class="tile" data-go="s-hard">
+      <div class="tile-ico"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.6H22l-6.2 4.4L18 20l-6-4.5L6 20l2.2-7-6.2-4.4h7.6z"/></svg></div>
+      <div class="tile-title">Трудные слова</div>
+      <div class="tile-sub" id="t-hard-sub">0 слов</div>
+    </button>
+    <button type="button" class="tile" data-go="s-mix">
+      <div class="tile-ico"><svg viewBox="0 0 24 24"><path d="M4 7h10M4 17h10M20 4v16M16 7l4-3 4 3M16 17l4 3 4-3" transform="translate(-4 0)"/></svg></div>
+      <div class="tile-title">Смешать</div>
+      <div class="tile-sub">Выбери источники</div>
+    </button>
+    <button type="button" class="tile" data-go="s-search">
+      <div class="tile-ico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3-3"/></svg></div>
+      <div class="tile-title">Поиск слов</div>
+      <div class="tile-sub">По всему словарю</div>
+    </button>
+  </div>
+</div>
+```
+
+  </section>
+
+  <!-- ================== STUDY HUB (books → parts → units) ================== -->
+
+  <section id="s-books" class="screen hidden">
+    <div class="topbar">
+      <button type="button" class="icon-btn" data-back>
+        <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="h2" style="flex:1;text-align:center">Библиотека</div>
+      <div style="width:40px"></div>
+    </div>
+    <div id="books-list" class="stack"></div>
+  </section>
+
+  <section id="s-parts" class="screen hidden">
+    <div class="topbar">
+      <button type="button" class="icon-btn" data-back>
+        <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="h2" style="flex:1;text-align:center" id="parts-title">Части</div>
+      <div style="width:40px"></div>
+    </div>
+    <div id="parts-list" class="stack"></div>
+  </section>
+
+  <section id="s-units" class="screen hidden">
+    <div class="topbar">
+      <button type="button" class="icon-btn" data-back>
+        <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="h2" style="flex:1;text-align:center" id="units-title">Вахьдаты</div>
+      <div style="width:40px"></div>
+    </div>
+    <div id="units-list" class="stack"></div>
+  </section>
+
+  <section id="s-unit" class="screen hidden">
+    <div class="topbar">
+      <button type="button" class="icon-btn" data-back>
+        <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="h2" style="flex:1;text-align:center" id="unit-title">Вахьда</div>
+      <button type="button" class="icon-btn" data-act="unit-more" aria-label="Ещё">
+        <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+      </button>
+    </div>
+
+```
+<div class="card" style="padding:18px">
+  <div class="row" style="align-items:flex-start;gap:14px">
+    <div class="ring" id="unit-ring" style="--size:56px"><span id="unit-ring-n">0%</span></div>
+    <div style="flex:1;min-width:0">
+      <div class="eyebrow" id="unit-eyebrow">ЧАСТЬ 1 · ВАХЬДА 1</div>
+      <div class="h3" style="margin-top:4px" id="unit-name">—</div>
+      <div class="muted" style="margin-top:4px" id="unit-meta">— слов</div>
+    </div>
+  </div>
+  <div class="btn-row" style="margin-top:14px">
+    <button type="button" class="btn btn-primary" data-act="study-unit">
+      <svg viewBox="0 0 24 24"><path d="M5 5v14l14-7z"/></svg>
+      Учить
+    </button>
+    <button type="button" class="btn btn-secondary" data-act="study-unit-due">Повтор</button>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <div class="eyebrow">Слова</div>
+    <div style="display:flex;gap:6px">
+      <button type="button" class="chip" data-filter="all">Все</button>
+      <button type="button" class="chip" data-filter="new">Новые</button>
+      <button type="button" class="chip" data-filter="learning">В учёбе</button>
+      <button type="button" class="chip" data-filter="fav">Избр.</button>
+    </div>
+  </div>
+  <div id="unit-words" class="stack-sm"></div>
+</div>
+```
+
+  </section>
+
+  <!-- ================== STUDY (flashcards) ================== -->
+
+  <section id="s-study" class="screen hidden">
+    <div class="topbar">
+      <button type="button" class="icon-btn" data-act="study-exit">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6"/></svg>
+      </button>
+      <div class="h4" style="flex:1;text-align:center" id="study-title">Учёба</div>
+      <button type="button" class="icon-btn" data-act="study-fav" aria-label="В избранное">
+        <svg viewBox="0 0 24 24" id="fav-ico"><path d="M12 3l2.9 6 6.6.9-4.8 4.7 1.1 6.4L12 17.8 6.2 21l1.1-6.4L2.5 9.9 9.1 9z"/></svg>
+      </button>
+    </div>
+
+```
+<div class="study-top">
+  <div class="progress"><i id="study-progress"></i></div>
+  <div class="count" id="study-count">0/0</div>
+</div>
+
+<div class="flashcard" id="flashcard">
+  <div class="fc-ar" id="fc-front">—</div>
+  <div class="fc-divider"></div>
+  <div class="fc-ru" id="fc-back">—</div>
+  <div class="fc-hint">Коснись, чтобы показать ответ</div>
+</div>
+
+<div class="rate-row" id="rate-row" style="visibility:hidden">
+  <button type="button" class="rate hard" data-rate="hard">
+    <span>Трудно</span><span class="k" id="k-hard">~10 мин</span>
+  </button>
+  <button type="button" class="rate ok" data-rate="ok">
+    <span>Нормально</span><span class="k" id="k-ok">~1 день</span>
+  </button>
+  <button type="button" class="rate easy" data-rate="easy">
+    <span>Легко</span><span class="k" id="k-easy">~4 дня</span>
+  </button>
+</div>
+
+<div style="margin-top:12px">
+  <button type="button" class="btn btn-secondary" data-act="flip">Показать ответ</button>
+</div>
+```
+
+  </section>
+
+  <!-- ================== SUMMARY ================== -->
+
+  <section id="s-summary" class="screen hidden">
+    <div class="topbar">
+      <div style="width:40px"></div>
+      <div class="h2" style="flex:1;text-align:center">Готово!</div>
+      <div style="width:40px"></div>
+    </div>
+    <div class="summary">
+      <div style="font-size:34px">🎉</div>
+      <div class="big" id="sum-accuracy">0%</div>
+      <div class="muted" style="margin-top:4px">Точность сессии</div>
+      <div class="grid-3">
+        <div class="stat-chip-2"><div class="n" id="sum-reviewed">0</div><div class="l">Повторено</div></div>
+        <div class="stat-chip-2"><div class="n" id="sum-time">0 мин</div><div class="l">Время</div></div>
+        <div class="stat-chip-2"><div class="n" id="sum-new">0</div><div class="l">Новых</div></div>
       </div>
-      <div class="card">
-        <div class="title3">Колоды</div>
-        <div class="small">Свои наборы</div>
-        <br>
-        <button class="btn green" onclick="showPage('deckPage')">Открыть</button>
+    </div>
+    <div class="btn-row" style="margin-top:14px">
+      <button type="button" class="btn btn-secondary" data-act="summary-home">Домой</button>
+      <button type="button" class="btn btn-primary" data-act="summary-again">Ещё круг</button>
+    </div>
+  </section>
+
+  <!-- ================== DECKS ================== -->
+
+  <section id="s-decks" class="screen hidden">
+    <div class="topbar">
+      <button type="button" class="icon-btn" data-back>
+        <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="h2" style="flex:1;text-align:center">Колоды</div>
+      <button type="button" class="icon-btn" data-act="decks-menu" aria-label="Ещё">
+        <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+      </button>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn btn-primary" data-act="new-deck">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Новая колода
+      </button>
+    </div>
+    <div id="decks-list" class="stack" style="margin-top:14px"></div>
+  </section>
+
+  <section id="s-deck" class="screen hidden">
+    <div class="topbar">
+      <button type="button" class="icon-btn" data-back>
+        <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="h2" style="flex:1;text-align:center" id="deck-title">Колода</div>
+      <button type="button" class="icon-btn" data-act="deck-menu" aria-label="Ещё">
+        <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+      </button>
+    </div>
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <div>
+          <div class="eyebrow">Колода</div>
+          <div class="h3" id="deck-name" style="margin-top:2px">—</div>
+          <div class="muted" id="deck-meta" style="margin-top:2px">0 слов</div>
+        </div>
+        <div class="ring" style="--size:52px" id="deck-ring"><span id="deck-ring-n">0%</span></div>
       </div>
-      <div class="card">
-        <div class="title3">Трудные слова</div>
-        <div class="small">Сохранённые слова</div>
-        <br>
-        <button class="btn green" onclick="openHardWords()">Открыть</button>
-      </div>
-      <div class="card">
-        <div class="title3">Новые слова</div>
-        <div class="small">Ещё не изученные</div>
-        <br>
-        <button class="btn green" onclick="openNewWords()">Открыть</button>
+      <div class="btn-row" style="margin-top:14px">
+        <button type="button" class="btn btn-primary" data-act="deck-study">Учить</button>
+        <button type="button" class="btn btn-secondary" data-act="deck-add">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          Добавить
+        </button>
       </div>
     </div>
-    <div class="hr"></div>
-    <button class="btn green" onclick="showPage('home')">Назад</button>
-  </div>
-</section>
+    <div id="deck-words" class="stack-sm" style="margin-top:14px"></div>
+  </section>
 
-<section id="books" class="hidden">
-  <div class="card">
-    <div class="title">بين يديك</div>
-    <div class="small">Части книги</div>
-    <div class="hr"></div>
-    <div id="partsList" class="list"></div>
-    <div class="hr"></div>
-    <button class="btn green" onclick="showPage('studyHub')">Назад</button>
-  </div>
-</section>
+  <!-- ================== HARD ================== -->
 
-<section id="units" class="hidden">
-  <div class="card">
-    <div id="unitsTitle" class="title">Вахьдаты</div>
-    <div class="small" id="unitsMeta">Часть 1</div>
-    <div class="hr"></div>
-    <div id="unitsList" class="list"></div>
-    <div class="hr"></div>
-    <button class="btn green" onclick="showPage('books')">Назад</button>
-  </div>
-</section>
-
-<section id="study" class="hidden">
-  <div class="card">
-    <div id="studyTitle" class="title">Учёба</div>
-    <div id="meta" class="small"></div>
-    <div style="margin-top:10px" class="progress"><div id="progressBar"></div></div>
-    <div id="progressText" class="tiny" style="margin-top:6px">0%</div>
-    <div id="front" class="ar"></div>
-    <div id="back" class="small" style="text-align:center">Нажми показать ответ</div>
-    <br>
-    <button class="btn green" onclick="flipCard()">Показать ответ</button>
-    <br><br>
-    <div class="grid2">
-      <button class="btn light" onclick="rate('hard')">Трудно</button>
-      <button class="btn light" onclick="rate('ok')">Нормально</button>
-      <button class="btn light" onclick="rate('easy')">Легко</button>
-      <button class="btn light" onclick="skipCard()">Пропустить</button>
+  <section id="s-hard" class="screen hidden">
+    <div class="topbar">
+      <button type="button" class="icon-btn" data-back>
+        <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="h2" style="flex:1;text-align:center">Трудные</div>
+      <div style="width:40px"></div>
     </div>
-    <br>
-    <button class="btn green" onclick="backToSource()">Назад</button>
-  </div>
-</section>
-
-<section id="deckPage" class="hidden">
-  <div class="card">
-    <div class="title">Мои колоды</div>
-    <div class="small">Создание и обучение</div>
-    <div class="hr"></div>
-    <div class="title3">Создать колоду</div>
-    <input id="deckName" placeholder="Название новой колоды" maxlength="60">
-    <button class="btn green" onclick="createDeck()">Создать колоду</button>
-    <div class="hr"></div>
-    <div id="deckList" class="list"></div>
-    <div class="hr"></div>
-    <div class="title3">Добавить слово в колоду</div>
-    <input id="wordAr" placeholder="Арабское слово" maxlength="120">
-    <input id="wordRu" placeholder="Перевод" maxlength="120">
-    <select id="deckSelect"></select>
-    <button class="btn green" onclick="addWordToDeck()">Добавить</button>
-    <div style="height:12px"></div>
-    <button class="btn green" onclick="showPage('studyHub')">Назад</button>
-  </div>
-</section>
-
-<section id="stats" class="hidden">
-  <div class="card">
-    <div class="title">Статистика</div>
-    <div class="small">Прогресс хранится в браузере</div>
-    <div class="hr"></div>
-    <div class="grid2">
-      <div class="card"><div class="small">Изучено</div><div id="st1" class="stat">0</div></div>
-      <div class="card"><div class="small">Трудных</div><div id="st2" class="stat">0</div></div>
-      <div class="card"><div class="small">Колод</div><div id="st3" class="stat">0</div></div>
-      <div class="card"><div class="small">Всего слов</div><div id="st4" class="stat">0</div></div>
+    <div id="hard-head" class="card">
+      <div class="row" style="justify-content:space-between">
+        <div>
+          <div class="eyebrow">Повторение</div>
+          <div class="h3" id="hard-count" style="margin-top:2px">0 слов</div>
+          <div class="muted">Забытые и отмеченные как трудные</div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary" style="margin-top:14px" data-act="study-hard">Учить</button>
     </div>
+    <div id="hard-list" class="stack-sm" style="margin-top:14px"></div>
+  </section>
+
+  <!-- ================== MIX ================== -->
+
+  <section id="s-mix" class="screen hidden">
+    <div class="topbar">
+      <button type="button" class="icon-btn" data-back>
+        <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="h2" style="flex:1;text-align:center">Смешать</div>
+      <div style="width:40px"></div>
+    </div>
+    <div class="muted" style="padding:0 4px 10px">Выбери источники — слова пойдут вперемешку.</div>
+    <div class="eyebrow" style="padding:4px 4px 8px">Вахьдаты</div>
+    <div id="mix-units" class="stack-sm"></div>
+    <div class="eyebrow" style="padding:18px 4px 8px">Колоды</div>
+    <div id="mix-decks" class="stack-sm"></div>
+    <div class="card" style="margin-top:16px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div class="eyebrow">Выбрано</div>
+        <div class="h3" id="mix-count">0 слов</div>
+      </div>
+      <button type="button" class="btn btn-primary" style="width:auto;padding:0 22px" data-act="mix-start">Учить</button>
+    </div>
+  </section>
+
+  <!-- ================== SEARCH ================== -->
+
+  <section id="s-search" class="screen hidden">
+    <div class="topbar">
+      <button type="button" class="icon-btn" data-back>
+        <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="h2" style="flex:1;text-align:center">Поиск</div>
+      <div style="width:40px"></div>
+    </div>
+    <div class="search-box">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3-3"/></svg>
+      <input id="search-input" type="search" placeholder="Арабское или перевод…" autocomplete="off">
+    </div>
+    <div class="segmented" style="margin-top:12px" id="search-seg">
+      <button type="button" class="seg on" data-sfilter="all">Все</button>
+      <button type="button" class="seg" data-sfilter="new">Новые</button>
+      <button type="button" class="seg" data-sfilter="learning">В учёбе</button>
+      <button type="button" class="seg" data-sfilter="fav">Избр.</button>
+    </div>
+    <div id="search-results" class="stack-sm" style="margin-top:14px"></div>
+  </section>
+
+  <!-- ================== STATS ================== -->
+
+  <section id="s-stats" class="screen hidden">
+    <div class="topbar">
+      <div style="width:40px"></div>
+      <div class="h2" style="flex:1;text-align:center">Статистика</div>
+      <div style="width:40px"></div>
+    </div>
+
+```
+<div class="kpi-grid">
+  <div class="kpi accent">
+    <div class="l">Серия дней</div>
+    <div class="v" id="k-streak">0</div>
+    <div class="d" id="k-streak-d">начни сегодня</div>
   </div>
-</section>
+  <div class="kpi">
+    <div class="l">Сегодня</div>
+    <div class="v" id="k-today">0</div>
+    <div class="d" id="k-today-d">повторений</div>
+  </div>
+  <div class="kpi">
+    <div class="l">Всего изучено</div>
+    <div class="v" id="k-total">0</div>
+    <div class="d">уникальных слов</div>
+  </div>
+  <div class="kpi">
+    <div class="l">Точность</div>
+    <div class="v" id="k-acc">—</div>
+    <div class="d">за 7 дней</div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:14px">
+  <div class="row" style="justify-content:space-between">
+    <div class="eyebrow">Активность · 91 день</div>
+    <div class="tiny" id="k-week-total">0 за неделю</div>
+  </div>
+  <div class="heatmap" id="heatmap" style="margin-top:12px"></div>
+  <div class="heatmap-legend">
+    <span>меньше</span>
+    <span class="sw" style="background:var(--surface-2)"></span>
+    <span class="sw" style="background: color-mix(in srgb, var(--brand-500) 18%, var(--surface-2))"></span>
+    <span class="sw" style="background: color-mix(in srgb, var(--brand-500) 38%, var(--surface-2))"></span>
+    <span class="sw" style="background: color-mix(in srgb, var(--brand-500) 62%, var(--surface-2))"></span>
+    <span class="sw" style="background: var(--brand-500)"></span>
+    <span>больше</span>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head"><div class="eyebrow">Коллекция</div></div>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="l">Слов в словаре</div><div class="v" id="k-vocab">0</div><div class="d">во всех вахьдатах и колодах</div></div>
+    <div class="kpi"><div class="l">Трудных</div><div class="v" id="k-hard-n">0</div><div class="d">активных</div></div>
+  </div>
+</div>
+```
+
+  </section>
+
+  <!-- ================== MORE ================== -->
+
+  <section id="s-more" class="screen hidden">
+    <div class="topbar">
+      <div style="width:40px"></div>
+      <div class="h2" style="flex:1;text-align:center">Ещё</div>
+      <div style="width:40px"></div>
+    </div>
+    <div class="stack">
+      <button type="button" class="row-tap" data-go="s-search">
+        <div class="lead"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3-3"/></svg></div>
+        <div class="body-col"><div class="t">Поиск слов</div><div class="s">По всему словарю</div></div>
+        <div class="trail"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+      </button>
+      <button type="button" class="row-tap" data-go="s-mix">
+        <div class="lead"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M4 17h10M16 4l4 3-4 3M16 14l4 3-4 3"/></svg></div>
+        <div class="body-col"><div class="t">Смешать источники</div><div class="s">Вахьдаты + колоды</div></div>
+        <div class="trail"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+      </button>
+      <button type="button" class="row-tap" data-act="export-data">
+        <div class="lead"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M6 9l6-6 6 6M5 21h14"/></svg></div>
+        <div class="body-col"><div class="t">Экспорт данных</div><div class="s">JSON-резервная копия</div></div>
+        <div class="trail"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+      </button>
+      <button type="button" class="row-tap" data-act="import-data">
+        <div class="lead"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V9M6 15l6 6 6-6M5 3h14"/></svg></div>
+        <div class="body-col"><div class="t">Импорт данных</div><div class="s">Восстановить из JSON</div></div>
+        <div class="trail"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+      </button>
+      <button type="button" class="row-tap" data-act="toggle-theme">
+        <div class="lead"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></div>
+        <div class="body-col"><div class="t">Тема оформления</div><div class="s" id="theme-sub">Светлая</div></div>
+        <div class="trail"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+      </button>
+      <button type="button" class="row-tap" data-act="reset-data">
+        <div class="lead" style="background:color-mix(in srgb,var(--danger) 12%, transparent);color:var(--danger)">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+        </div>
+        <div class="body-col"><div class="t" style="color:var(--danger)">Сбросить прогресс</div><div class="s">Удалит все данные</div></div>
+        <div class="trail"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+      </button>
+    </div>
+  </section>
 
 </div>
 
-<nav class="nav">
-  <button class="btn light" onclick="showPage('home')">Главная</button>
-  <button class="btn light" onclick="showPage('studyHub')">Учёба</button>
-  <button class="btn light" onclick="showPage('stats')">Статистика</button>
+<!-- Bottom Nav -->
+
+<nav class="bottom-nav">
+  <div class="inner">
+    <button type="button" class="nav-btn active" data-go="s-home" data-tab="home">
+      <svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7M6 10v10h12V10"/></svg>
+      <span class="lbl">Главная</span>
+    </button>
+    <button type="button" class="nav-btn" data-go="s-books" data-tab="books">
+      <svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2zM8 3v18"/></svg>
+      <span class="lbl">Учёба</span>
+    </button>
+    <button type="button" class="nav-btn" data-go="s-stats" data-tab="stats">
+      <svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-6M22 20H2"/></svg>
+      <span class="lbl">Статистика</span>
+    </button>
+    <button type="button" class="nav-btn" data-go="s-more" data-tab="more">
+      <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+      <span class="lbl">Ещё</span>
+    </button>
+  </div>
 </nav>
+
+<!-- Sheet (reusable) -->
+
+<div class="sheet-backdrop" id="sheet-bg"></div>
+<div class="sheet" id="sheet">
+  <div class="handle"></div>
+  <div class="sheet-head">
+    <div class="h2" id="sheet-title">—</div>
+    <button type="button" class="icon-btn" data-act="close-sheet" aria-label="Закрыть">
+      <svg viewBox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6"/></svg>
+    </button>
+  </div>
+  <div id="sheet-body"></div>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
 'use strict';
+/* ================================================================
+   DARUL HADIS PRO — app.js inline
+   Архитектура:
+   - store: единый LocalStorage-стейт (schema v2, миграция из v1)
+   - content: учебный контент (книги/части/вахьдаты)
+   - srs:    алгоритм интервального повторения (SM-2 lite)
+   - session: активная сессия флэшкарт (очередь + учёт)
+   - ui:    рендер экранов, навигация, жесты
+   ================================================================ */
 
-const STORAGE = {
-  hard: 'dhp_hard',
-  studied: 'dhp_studied',
-  decks: 'dhp_decks',
-  seen: 'dhp_seen'
+/* ===== CONTENT ================================================== */
+const BOOKS = [
+  {
+    id: 'byy',
+    ar: 'بين يديك',
+    title: 'Аль-Арабия бейна ядейк',
+    subtitle: 'Арабский между твоих рук',
+    available: true,
+    parts: [
+      {
+        id: 'byy-p1',
+        num: 1,
+        title: 'Часть 1',
+        available: true,
+        units: [
+          { id:'byy-p1-u1', num:1, name:'Приветствие и знакомство', words: [
+            ['اِثْنَانِ','Два'], ['أَخٌ','Брат'], ['أُخْتٌ','Сестра'], ['أَرْبَعَةٌ','Четыре'], ['اِسْمٌ','Имя'],
+            ['اللّٰه','Аллах'], ['أَنَا','Я'], ['أَنْتَ','Ты'], ['أَنْتِ','Ты (ж.)'], ['أَهْلًا وَسَهْلًا','Добро пожаловать'],
+            ['بَاكِسْتَانِيٌّ','Пакистанец'], ['بِخَيْرٍ','Хорошо'], ['ثَلَاثَةٌ','Три'], ['جِنْسِيَّةٌ','Национальность'], ['اَلْحَمْدُ لِلّٰهِ','Хвала Аллаху'],
+            ['خَمْسَةٌ','Пять'], ['اَلسَّلَامُ عَلَيْكُمْ','Мир вам'], ['صَدِيقٌ','Друг'], ['صَدِيقَةٌ','Подруга'], ['طَالِبَةٌ','Студентка'],
+            ['طَبِيبَةٌ','Врач'], ['لِ','Для'], ['لَكَ','Тебе'], ['لَكِ','Тебе (ж.)'], ['كَيْفَ حَالُكَ؟','Как дела?'],
+            ['كَيْفَ حَالُكِ؟','Как дела?'], ['مَا اسْمُكَ؟','Как тебя зовут?'], ['مَا اسْمُكِ؟','Как тебя зовут?'], ['مَا جِنْسِيَّتُكَ؟','Твоя национальность?'], ['مَا جِنْسِيَّتُكِ؟','Твоя национальность?'],
+            ['مُدَرِّسٌ','Учитель'], ['مَعَ السَّلَامَةِ','До свидания'], ['مِنْ','Из'], ['مِنْ أَيْنَ؟','Откуда?'], ['مُهَنْدِسٌ','Инженер'],
+            ['نَعَمْ','Да'], ['هٰذَا','Это'], ['هٰذِهِ','Это'], ['هُوَ','Он'], ['هِيَ','Она'],
+            ['وَ','И'], ['وَاحِدٌ','Один'], ['وَعَلَيْكُمُ السَّلَامُ','И вам мир'], ['قَلَمٌ','Ручка'], ['كِتَابٌ','Книга'],
+            ['بَابٌ','Дверь'], ['مَسْجِدٌ','Мечеть'], ['مَدْرَسَةٌ','Школа'], ['سَيَّارَةٌ','Машина'], ['لُغَةٌ','Язык'],
+            ['طَعَامٌ','Еда'], ['مَاءٌ','Вода'], ['شَايٌ','Чай']
+          ]},
+          { id:'byy-p1-u2', num:2, name:'Семья и дом', words: [
+            ['أَبٌ','Отец'], ['اِبْنٌ','Сын'], ['اِبْنَةٌ','Дочь'], ['أَذَانٌ','Азан'], ['أُسْرَةٌ','Семья'],
+            ['اللّٰهُ أَكْبَرُ','Аллах Велик'], ['إِلَى','К'], ['أُمٌّ','Мать'], ['أَوْلَادٌ','Дети'], ['أَيْنَ','Где'],
+            ['تِسْعَةٌ','Девять'], ['تَوَضَّأَ','Совершил омовение'], ['يَتَوَضَّأُ','Совершает омовение'], ['ثَمَانِيَةٌ','Восемь'], ['جَدٌّ','Дед'],
+            ['جَدَّةٌ','Бабушка'], ['حَمَّامٌ','Ванная'], ['الرَّسُولُ','Посланник'], ['سَبْعَةٌ','Семь'], ['سِتَّةٌ','Шесть'],
+            ['شَجَرَةٌ','Дерево'], ['صَلَّى','Совершил молитву'], ['يُصَلِّي','Совершает молитву'], ['صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ','Мир ему'], ['صُورَةٌ','Фото'],
+            ['طَالِبٌ','Студент'], ['عَشَرَةٌ','Десять'], ['عَمٌّ','Дядя'], ['عَمَّةٌ','Тётя'], ['غُرْفَةٌ','Комната'],
+            ['الفَجْرِ','Фаджр'], ['فِي','В'], ['قَرَأَ','Читал'], ['يَقْرَأُ','Читает'], ['القُرْآنَ','Коран'],
+            ['مَا شَاءَ اللَّه','Как пожелал Аллах'], ['مُصَلًّى','Молельня'], ['مِعْطَفٌ','Пальто'], ['مُعَلِّمَةٌ','Учительница'],
+            ['مَنْ','Кто'], ['نَظَّارَةٌ','Очки'], ['هُ','Его'], ['هَا','Её'], ['هَيَّا بِنَا','Пойдём'],
+            ['وَالِدٌ','Отец'], ['وَالِدَةٌ','Мать'], ['يَا','О']
+          ]},
+          { id:'byy-p1-u3', num:3, name:'В университете', locked:true, words: [] },
+          { id:'byy-p1-u4', num:4, name:'Жизнь в городе', locked:true, words: [] },
+          { id:'byy-p1-u5', num:5, name:'Хобби', locked:true, words: [] },
+          { id:'byy-p1-u6', num:6, name:'Поездки', locked:true, words: [] },
+          { id:'byy-p1-u7', num:7, name:'Учёба и труд', locked:true, words: [] },
+          { id:'byy-p1-u8', num:8, name:'Еда и напитки', locked:true, words: [] },
+        ]
+      },
+      { id:'byy-p2', num:2, title:'Часть 2', locked:true, units:[] },
+      { id:'byy-p3', num:3, title:'Часть 3', locked:true, units:[] },
+      { id:'byy-p4', num:4, title:'Часть 4', locked:true, units:[] },
+    ],
+  },
+  { id:'bina', ar:'البناء', title:'Аль-Бина', locked:true, parts:[] },
+  { id:'ajur', ar:'الآجرومية', title:'Аль-Аджуррумия', locked:true, parts:[] },
+  { id:'arb40', ar:'الأربعون النووية', title:'40 хадисов ан-Навави', locked:true, parts:[] },
+];
+
+/* ===== UTILS ==================================================== */
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const escHTML = (s) => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const DAY = 24*60*60*1000;
+const now = () => Date.now();
+const todayKey = (d = new Date()) => {
+  const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), dd = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${dd}`;
+};
+const daysBetween = (a, b) => {
+  const A = new Date(a); A.setHours(0,0,0,0);
+  const B = new Date(b); B.setHours(0,0,0,0);
+  return Math.round((B - A) / DAY);
+};
+const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
+const shuffle = (arr) => {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+};
+const fmtDue = (ms) => {
+  if (ms <= 0) return 'сейчас';
+  const m = Math.round(ms / 60000);
+  if (m < 60) return `~${m} мин`;
+  const h = Math.round(m/60);
+  if (h < 24) return `~${h} ч`;
+  const d = Math.round(h/24);
+  return `~${d} д`;
 };
 
-const unit1 = [
-  ['اِثْنَانِ','Два'], ['أَخٌ','Брат'], ['أُخْتٌ','Сестра'], ['أَرْبَعَةٌ','Четыре'], ['اِسْمٌ','Имя'],
-  ['اللّٰه','Аллах'], ['أَنَا','Я'], ['أَنْتَ','Ты'], ['أَنْتِ','Ты (ж.)'], ['أَهْلًا وَسَهْلًا','Добро пожаловать'],
-  ['بَاكِسْتَانِيٌّ','Пакистанец'], ['بِخَيْرٍ','Хорошо'], ['ثَلَاثَةٌ','Три'], ['جِنْسِيَّةٌ','Национальность'], ['اَلْحَمْدُ لِلّٰهِ','Хвала Аллаху'],
-  ['خَمْسَةٌ','Пять'], ['اَلسَّلَامُ عَلَيْكُمْ','Мир вам'], ['صَدِيقٌ','Друг'], ['صَدِيقَةٌ','Подруга'], ['طَالِبَةٌ','Студентка'],
-  ['طَبِيبَةٌ','Врач'], ['لِ','Для'], ['لَكَ','Тебе'], ['لَكِ','Тебе (ж.)'], ['كَيْفَ حَالُكَ؟','Как дела?'],
-  ['كَيْفَ حَالُكِ؟','Как дела?'], ['مَا اسْمُكَ؟','Как тебя зовут?'], ['مَا اسْمُكِ؟','Как тебя зовут?'], ['مَا جِنْسِيَّتُكَ؟','Твоя национальность?'], ['مَا جِنْسِيَّتُكِ؟','Твоя национальность?'],
-  ['مُدَرِّسٌ','Учитель'], ['مَعَ السَّلَامَةِ','До свидания'], ['مِنْ','Из'], ['مِنْ أَيْنَ؟','Откуда?'], ['مُهَنْدِسٌ','Инженер'],
-  ['نَعَمْ','Да'], ['هٰذَا','Это'], ['هٰذِهِ','Это'], ['هُوَ','Он'], ['هِيَ','Она'],
-  ['وَ','И'], ['وَاحِدٌ','Один'], ['وَعَلَيْكُمُ السَّلَامُ','И вам мир'], ['قَلَمٌ','Ручка'], ['كِتَابٌ','Книга'],
-  ['بَابٌ','Дверь'], ['مَسْجِدٌ','Мечеть'], ['مَدْرَسَةٌ','Школа'], ['سَيَّارَةٌ','Машина'], ['لُغَةٌ','Язык'],
-  ['طَعَامٌ','Еда'], ['مَاءٌ','Вода'], ['شَايٌ','Чай']
-];
+/* ===== STORE ==================================================== */
+const STORAGE_KEY = 'dhp.v2';
 
-const unit2 = [
-  ['أَبٌ','Отец'], ['اِبْنٌ','Сын'], ['اِبْنَةٌ','Дочь'], ['أَذَانٌ','Азан'], ['أُسْرَةٌ','Семья'],
-  ['اللّٰهُ أَكْبَرُ','Аллах Велик'], ['إِلَى','К'], ['أُمٌّ','Мать'], ['أَوْلَادٌ','Дети'], ['أَيْنَ','Где'],
-  ['تِسْعَةٌ','Девять'], ['تَوَضَّأَ','Совершил омовение'], ['يَتَوَضَّأُ','Совершает омовение'], ['ثَمَانِيَةٌ','Восемь'], ['جَدٌّ','Дед'],
-  ['جَدَّةٌ','Бабушка'], ['حَمَّامٌ','Ванная'], ['الرَّسُولُ','Посланник'], ['سَبْعَةٌ','Семь'], ['سِتَّةٌ','Шесть'],
-  ['شَجَرَةٌ','Дерево'], ['صَلَّى','Совершил молитву'], ['يُصَلِّي','Совершает молитву'], ['صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ','Мир ему'], ['صُورَةٌ','Фото'],
-  ['طَالِبٌ','Студент'], ['عَشَرَةٌ','Десять'], ['عَمٌّ','Дядя'], ['عَمَّةٌ','Тётя'], ['غُرْفَةٌ','Комната'],
-  ['الفَجْرِ','Фаджр'], ['فِي','В'], ['قَرَأَ','Читал'], ['يَقْرَأُ','Читает'], ['القُرْآنَ','Коран'],
-  ['مَا شَاءَ اللَّه','Как пожелал Аллах'], ['مَسْجِدٌ','Мечеть'], ['مُصَلًّы','Молельня'], ['مِعْطَفٌ','Пальто'], ['مُعَلِّمَةٌ','Учительница'],
-  ['مَنْ','Кто'], ['نَظَّارَةٌ','Очки'], ['هُ','Его'], ['هَا','Её'], ['هَيَّا بِنَا','Пойдём'],
-  ['وَالِدٌ','Отец'], ['وَالِدَةٌ','Мать'], ['يَا','О']
-];
-
-let studied = readNumber(STORAGE.studied, 0);
-let hardWords = readJSON(STORAGE.hard, []);
-let decks = readJSON(STORAGE.decks, {});
-let seenWords = readJSON(STORAGE.seen, []);
-let queue = [];
-let current = null;
-let currentBackPage = 'studyHub';
-let currentTitle = 'Учёба';
-
-function $(id){ return document.getElementById(id); }
-
-function readJSON(key, fallback){
+function migrateV1(){
+  const out = defaultState();
   try {
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : fallback;
-  } catch (e) { return fallback; }
-}
+    const oldHard = JSON.parse(localStorage.getItem('dhp_hard') || '[]');
+    const oldStudied = parseInt(localStorage.getItem('dhp_studied') || '0', 10) || 0;
+    const oldDecks = JSON.parse(localStorage.getItem('dhp_decks') || '{}');
 
-function readNumber(key, fallback){
-  const n = parseInt(localStorage.getItem(key) || String(fallback), 10);
-  return Number.isFinite(n) ? n : fallback;
-}
-
-function saveAll(){
-  localStorage.setItem(STORAGE.hard, JSON.stringify(hardWords));
-  localStorage.setItem(STORAGE.studied, String(studied));
-  localStorage.setItem(STORAGE.decks, JSON.stringify(decks));
-  localStorage.setItem(STORAGE.seen, JSON.stringify(seenWords));
-}
-
-function cloneWords(arr){ return arr.map(pair => [pair[0], pair[1]]); }
-
-function uniqueByArabic(words){
-  const seen = new Set();
-  const out = [];
-  for (const w of words) {
-    if (!seen.has(w[0])) {
-      seen.add(w[0]);
-      out.push([w[0], w[1]]);
+    if (Array.isArray(oldHard)) {
+      oldHard.forEach(p => {
+        if (!p || !p[0]) return;
+        const id = keyOf(p[0]);
+        out.cards[id] = blankCard(id, p[0], p[1] || '');
+        out.cards[id].flags.hard = true;
+      });
     }
-  }
+    if (oldDecks && typeof oldDecks === 'object') {
+      Object.keys(oldDecks).forEach(name => {
+        const deckId = 'u_'+Math.random().toString(36).slice(2,9);
+        out.decks[deckId] = { id: deckId, name, createdAt: now(), words: [] };
+        (oldDecks[name] || []).forEach(p => {
+          if (!p || !p[0]) return;
+          out.decks[deckId].words.push({ ar: p[0], ru: p[1] || '' });
+          const id = keyOf(p[0]);
+          if (!out.cards[id]) out.cards[id] = blankCard(id, p[0], p[1] || '');
+        });
+      });
+    }
+    out.totals.reviewed = oldStudied;
+  } catch(e) {}
   return out;
 }
 
-function getAllBookWords(){
-  return uniqueByArabic([...unit1, ...unit2]);
+function defaultState(){
+  return {
+    version: 2,
+    createdAt: now(),
+    settings: {
+      theme: 'light',
+      lang: 'ru',
+    },
+    /* Card SRS state keyed by Arabic text hash */
+    cards: {},          // { [id]: { id, ar, ru, ease, interval, due, reps, lapses, last, flags:{hard,fav,learned} } }
+    decks: {},          // { [deckId]: { id, name, createdAt, words: [{ar,ru}] } }
+    totals: {
+      reviewed: 0,      // life-time reviews
+    },
+    days: {},           // { 'YYYY-MM-DD': { reviews, correct, new, ms } }
+    streak: { current: 0, best: 0, lastActive: null },
+    lastSession: null,  // { type, id, title, lead }
+  };
 }
 
-function getNewWords(){
-  const seen = new Set(seenWords.map(x => x[0]));
-  return getAllBookWords().filter(w => !seen.has(w[0]));
+function keyOf(ar){
+  // компактный id на основе арабского текста, но сохранён сам ar для уникальности
+  let h = 0; for (let i = 0; i < ar.length; i++) { h = ((h<<5) - h) + ar.charCodeAt(i); h |= 0; }
+  return 'c'+Math.abs(h).toString(36);
 }
 
-function showPage(id){
-  ['home','studyHub','books','units','study','deckPage','stats'].forEach(x => $(x).classList.add('hidden'));
-  $(id).classList.remove('hidden');
-  if(id === 'books') renderParts();
-  if(id === 'units') renderUnits();
-  if(id === 'deckPage') renderDecks();
-  updateStats();
+function blankCard(id, ar, ru){
+  return {
+    id, ar, ru,
+    ease: 2.5,
+    interval: 0,       // дней
+    due: 0,            // timestamp следующего повтора
+    reps: 0,
+    lapses: 0,
+    last: 0,
+    flags: { hard:false, fav:false, learned:false }
+  };
 }
 
-function soon(){ alert('Скоро'); }
-
-function renderParts(){
-  const wrap = $('partsList');
-  let html = '';
-  for (let p = 1; p <= 8; p++) {
-    const label = p === 1 ? 'Доступна' : 'Скоро';
-    html += `
-      <div class="unitBox">
-        <div class="title3">Часть ${p}</div>
-        <div class="small">${label}</div>
-        <div class="hr"></div>
-        <button class="btn ${p === 1 ? 'green' : 'soft'}" onclick="openPart(${p})">Открыть</button>
-      </div>
-    `;
+function loadState(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.version === 2) return parsed;
+    }
+  } catch(e) {}
+  // try migration
+  if (localStorage.getItem('dhp_decks') || localStorage.getItem('dhp_hard')) {
+    const m = migrateV1();
+    saveState(m);
+    return m;
   }
-  wrap.innerHTML = html;
+  const fresh = defaultState();
+  saveState(fresh);
+  return fresh;
 }
 
-function openPart(partNum){
-  if (partNum !== 1) { soon(); return; }
-  $('unitsTitle').innerText = 'Вахьдаты';
-  $('unitsMeta').innerText = 'Часть ' + partNum;
-  $('unitsList').dataset.part = String(partNum);
-  showPage('units');
+let STATE;
+let SAVE_T = 0;
+function saveState(s = STATE){
+  clearTimeout(SAVE_T);
+  SAVE_T = setTimeout(() => {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch(e) {}
+  }, 80);
+}
+STATE = loadState();
+
+/* Гарантируем наличие card-записи для пары [ar, ru] */
+function ensureCard(ar, ru){
+  const id = keyOf(ar);
+  if (!STATE.cards[id]) STATE.cards[id] = blankCard(id, ar, ru);
+  else if (!STATE.cards[id].ru && ru) STATE.cards[id].ru = ru;
+  return STATE.cards[id];
 }
 
-function renderUnits(){
-  const partNum = Number($('unitsList').dataset.part || '1');
-  const wrap = $('unitsList');
-  let html='';
-  for(let u=1;u<=8;u++){
-    const active = partNum===1 && (u===1 || u===2);
-    html += `
-      <div class="unitBox">
-        <div class="title3">Вахьда ${u}</div>
-        <div class="small">${active ? 'Открыта' : 'Скоро'}</div>
-        <div class="hr"></div>
-        <button class="btn ${active ? 'green' : 'soft'}" onclick="openUnit(${partNum},${u})">Открыть</button>
-      </div>`;
+/* ===== SRS ====================================================== */
+/* Упрощённый SM-2:
+   - hard:  reset learning stage; next in ~10 min; ease -= 0.20
+   - ok:    если reps<2 → +1 день, иначе interval * ease; ease без изменений
+   - easy:  как ok, но с бонусом 1.3; ease += 0.10
+   - обучение: первые две «Нормально» = 1 дн, 3 дн; потом по формуле.
+*/
+function rate(cardId, kind){
+  const c = STATE.cards[cardId];
+  if (!c) return;
+  const NOW = now();
+  const startedAt = c.last || NOW;
+  c.last = NOW;
+  c.reps = c.reps || 0;
+
+  if (kind === 'hard') {
+    c.lapses = (c.lapses||0) + 1;
+    c.ease = clamp((c.ease ?? 2.5) - 0.20, 1.3, 2.8);
+    c.interval = 0;
+    c.due = NOW + 10*60*1000; // ~10 мин
+    c.flags.hard = true;
+    c.reps = Math.max(0, c.reps - 1);
+    c.flags.learned = false;
+  } else if (kind === 'ok') {
+    c.reps = c.reps + 1;
+    let iv;
+    if (c.reps === 1) iv = 1;
+    else if (c.reps === 2) iv = 3;
+    else iv = Math.max(1, Math.round((c.interval||1) * (c.ease||2.5)));
+    c.interval = iv;
+    c.due = NOW + iv * DAY;
+    if (c.reps >= 2) c.flags.learned = true;
+  } else if (kind === 'easy') {
+    c.reps = c.reps + 1;
+    c.ease = clamp((c.ease ?? 2.5) + 0.10, 1.3, 3.2);
+    let iv;
+    if (c.reps <= 1) iv = 4;
+    else iv = Math.max(1, Math.round((c.interval||1) * (c.ease||2.5) * 1.3));
+    c.interval = iv;
+    c.due = NOW + iv * DAY;
+    c.flags.hard = false;
+    c.flags.learned = true;
   }
-  wrap.innerHTML = html;
+  saveState();
 }
 
-function openUnit(partNum, unitNum){
-  if(partNum===1 && unitNum===1){ openStudy(unit1,'Часть 1 • Вахьда 1','units'); return; }
-  if(partNum===1 && unitNum===2){ openStudy(unit2,'Часть 1 • Вахьда 2','units'); return; }
-  soon();
+function previewIntervals(cardId){
+  const c = STATE.cards[cardId] || blankCard('','','');
+  const ease = c.ease || 2.5;
+  const reps = c.reps || 0;
+  const cur = c.interval || 0;
+  const hardText = fmtDue(10*60*1000);
+  let okDays = reps === 0 ? 1 : reps === 1 ? 3 : Math.max(1, Math.round((cur||1) * ease));
+  let easyDays = reps === 0 ? 4 : Math.max(1, Math.round((cur||1) * ease * 1.3));
+  return {
+    hard: hardText,
+    ok: fmtDue(okDays*DAY),
+    easy: fmtDue(easyDays*DAY),
+  };
 }
 
-function openHardWords(){
-  if (hardWords.length === 0) { alert('Трудных слов пока нет'); return; }
-  openStudy(hardWords, 'Трудные слова', 'studyHub');
-}
+/* ===== DAYS / STREAK ============================================ */
+function bumpDay(incReviews = 0, incCorrect = 0, incNew = 0, ms = 0){
+  const k = todayKey();
+  if (!STATE.days[k]) STATE.days[k] = { reviews:0, correct:0, new:0, ms:0 };
+  const d = STATE.days[k];
+  d.reviews += incReviews;
+  d.correct += incCorrect;
+  d.new += incNew;
+  d.ms += ms;
 
-function openNewWords(){
-  const words = getNewWords();
-  if (words.length === 0) { alert('Новых слов пока нет'); return; }
-  openStudy(words, 'Новые слова', 'studyHub');
-}
-
-function openDeck(name){
-  const deck = decks[name] || [];
-  if (deck.length === 0) { alert('В колоде нет слов'); return; }
-  openStudy(deck, name, 'deckPage');
-}
-
-function openStudy(words, title, backPage){
-  queue = cloneWords(words);
-  shuffle(queue);
-  current = null;
-  currentBackPage = backPage;
-  $('studyTitle').innerText = title;
-  showPage('study');
-  nextCard();
-}
-
-function shuffle(arr){
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+  // streak
+  const last = STATE.streak.lastActive;
+  if (last !== k) {
+    if (!last) {
+      STATE.streak.current = 1;
+    } else {
+      const diff = daysBetween(last, new Date());
+      if (diff === 1) STATE.streak.current += 1;
+      else if (diff > 1) STATE.streak.current = 1;
+      // if 0 — same day, keep current
+    }
+    STATE.streak.best = Math.max(STATE.streak.best, STATE.streak.current);
+    STATE.streak.lastActive = k;
   }
-  return arr;
+  STATE.totals.reviewed += incReviews;
+  saveState();
 }
 
-function nextCard(){
-  if (queue.length === 0) {
-    current = null;
-    $('front').innerText = '✓';
-    $('back').innerText = 'Готово';
-    $('meta').innerText = '';
-    $('progressBar').style.width = '100%';
-    $('progressText').innerText = '100%';
-    saveAll();
-    return;
+function dueTodayCount(){
+  const NOW = now();
+  let n = 0;
+  for (const id in STATE.cards) {
+    const c = STATE.cards[id];
+    if ((c.due||0) <= NOW) n++;
   }
-  current = queue.shift();
-  $('front').innerText = current[0];
-  $('back').innerText = 'Нажми показать ответ';
-  $('meta').innerText = 'Осталось ' + queue.length;
-  $('progressBar').style.width = '0%'; 
+  return n;
 }
 
-function flipCard(){
-  if (!current) return;
-  $('back').innerText = current[1];
+/* ===== SOURCES: собираем слова из учебного контента ============= */
+function allUnitsFlat(){
+  const out = [];
+  BOOKS.forEach(b => (b.parts||[]).forEach(p => (p.units||[]).forEach(u => {
+    if ((u.words||[]).length) out.push({ book:b, part:p, unit:u });
+  })));
+  return out;
 }
-
-function markSeen(word){
-  if (!seenWords.some(x => x[0] === word[0])) seenWords.push([word[0], word[1]]);
-}
-
-function addHard(word){
-  if (!hardWords.some(x => x[0] === word[0])) hardWords.push([word[0], word[1]]);
-}
-
-function rate(kind){
-  if (!current) return;
-  studied++;
-  markSeen(current);
-  if (kind === 'hard') addHard(current);
-  saveAll();
-  nextCard();
-  updateStats();
-}
-
-function skipCard(){
-  if (!current) return;
-  queue.push(current);
-  nextCard();
-}
-
-function backToSource(){
-  showPage(currentBackPage);
-}
-
-function createDeck(){
-  const name = $('deckName').value.trim();
-  if (!name) return;
-  if (!decks[name]) decks[name] = [];
-  $('deckName').value = '';
-  saveAll();
-  renderDecks();
-  updateStats();
-}
-
-function addWordToDeck(){
-  const ar = $('wordAr').value.trim();
-  const ru = $('wordRu').value.trim();
-  const deck = $('deckSelect').value;
-  if (!ar || !ru || !deck) return;
-  decks[deck].push([ar, ru]);
-  $('wordAr').value = '';
-  $('wordRu').value = '';
-  saveAll();
-  renderDecks();
-  updateStats();
-}
-
-function deleteDeck(name){
-  if(!confirm('Удалить колоду?')) return;
-  delete decks[name];
-  saveAll();
-  renderDecks();
-  updateStats();
-}
-
-function renderDecks(){
-  const list=$('deckList');
-  const select=$('deckSelect');
-  const names=Object.keys(decks);
-  let html='';
-  let opts='<option value="">Выбери колоду</option>';
-  if(names.length===0){
-    list.innerHTML='<div class="small">Колод пока нет</div>';
-    select.innerHTML=opts;
-    return;
-  }
-  names.forEach(name => {
-    html += `
-      <div class="deck">
-        <div class="title3">${escapeHTML(name)}</div>
-        <div class="small">${decks[name].length} слов</div>
-        <div class="hr"></div>
-        <div class="grid2">
-          <button class="btn green" onclick="openDeck('${escapeHTML(name)}')">Учить</button>
-          <button class="btn red" onclick="deleteDeck('${escapeHTML(name)}')">Удалить</button>
-        </div>
-      </div>`;
-    opts += `<option value="${escapeHTML(name)}">${escapeHTML(name)}</option>`;
+function allContentWords(){
+  const seen = new Set(); const out = [];
+  allUnitsFlat().forEach(({unit}) => {
+    unit.words.forEach(w => {
+      if (!seen.has(w[0])) { seen.add(w[0]); out.push({ ar: w[0], ru: w[1] }); }
+    });
   });
-  list.innerHTML=html;
-  select.innerHTML=opts;
+  return out;
+}
+function allDeckWords(){
+  const seen = new Set(); const out = [];
+  for (const id in STATE.decks) {
+    STATE.decks[id].words.forEach(w => {
+      if (!seen.has(w.ar)) { seen.add(w.ar); out.push({ ar:w.ar, ru:w.ru }); }
+    });
+  }
+  return out;
+}
+function allWords(){
+  const seen = new Set(); const out = [];
+  [...allContentWords(), ...allDeckWords()].forEach(w => {
+    if (!seen.has(w.ar)) { seen.add(w.ar); out.push(w); }
+  });
+  // плюс слова, для которых есть только card-запись (из миграции)
+  for (const id in STATE.cards) {
+    const c = STATE.cards[id];
+    if (!seen.has(c.ar)) { seen.add(c.ar); out.push({ ar:c.ar, ru:c.ru }); }
+  }
+  return out;
+}
+function findUnit(unitId){
+  for (const b of BOOKS) for (const p of (b.parts||[])) for (const u of (p.units||[])) {
+    if (u.id === unitId) return { book:b, part:p, unit:u };
+  }
+  return null;
+}
+function findBook(id){ return BOOKS.find(b => b.id === id); }
+function findPart(bookId, partId){
+  const b = findBook(bookId); if (!b) return null;
+  return (b.parts||[]).find(p => p.id === partId);
 }
 
-function updateStats(){
-  $('st1').innerText = studied;
-  $('st2').innerText = hardWords.length;
-  $('st3').innerText = Object.keys(decks).length;
-  $('st4').innerText = getAllBookWords().length;
+/* ===== SESSION (активная учёба) ================================= */
+const session = {
+  active: false,
+  type: null,      // 'unit' | 'deck' | 'hard' | 'mix' | 'due'
+  title: '',
+  backScreen: 's-home',
+  queue: [],       // массив cardId в порядке показа (циклическая)
+  seen: new Set(), // unique cardId seen в этой сессии
+  current: null,   // cardId
+  revealed: false,
+  stats: { reviewed:0, correct:0, newLearned:0, startMs:0, cardStartMs:0 },
+  plannedCount: 0, // сколько уникальных слов в сессии (для прогресса)
+};
+
+function startSession({ type, title, words, backScreen='s-home' }){
+  if (!words || !words.length) { toast('Нет слов для сессии'); return; }
+  session.active = true;
+  session.type = type;
+  session.title = title;
+  session.backScreen = backScreen;
+  // гарантируем наличие card для каждого слова
+  const ids = [];
+  words.forEach(w => {
+    const c = ensureCard(w.ar, w.ru || '');
+    ids.push(c.id);
+  });
+  session.queue = shuffle(ids);
+  session.seen = new Set();
+  session.current = null;
+  session.revealed = false;
+  session.stats = { reviewed:0, correct:0, newLearned:0, startMs: now(), cardStartMs: now() };
+  session.plannedCount = ids.length;
+
+  STATE.lastSession = { type, title, backScreen };
+  saveState();
+
+  navigate('s-study');
+  updateStudyHeader();
+  renderNextCard();
 }
 
-function escapeHTML(str){
-  return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+/* Интервалы возврата в текущей сессии — для циркуляции (поверх SRS) */
+const Q_INTERVAL = { hard: 6, ok: 15, easy: 50 };
+function reinsert(cardId, k){
+  const steps = Q_INTERVAL[k] ?? 10;
+  const pos = Math.min(steps, session.queue.length);
+  session.queue.splice(pos, 0, cardId);
 }
 
-function init(){
-  renderParts();
-  updateStats();
+function renderNextCard(){
+  const fc = $('#flashcard');
+  fc.classList.remove('revealed');
+  $('#rate-row').style.visibility = 'hidden';
+  if (session.queue.length === 0) {
+    return finishSession();
+  }
+  session.current = session.queue.shift();
+  const c = STATE.cards[session.current];
+  if (!c) return renderNextCard();
+
+  session.revealed = false;
+  session.stats.cardStartMs = now();
+  session.seen.add(c.id);
+
+  $('#fc-front').textContent = c.ar || '—';
+  $('#fc-back').textContent = c.ru || '—';
+
+  fc.classList.remove('swipe-left','swipe-right','swipe-up','enter');
+  // триггерим reflow для повторной анимации
+  void fc.offsetWidth;
+  fc.classList.add('enter');
+
+  updateStudyHeader();
+  updateFavIcon();
+  updateRatePreview();
 }
 
-window.showPage = showPage;
-window.soon = soon;
-window.openPart = openPart;
-window.openUnit = openUnit;
-window.openHardWords = openHardWords;
-window.openNewWords = openNewWords;
-window.openDeck = openDeck;
-window.flipCard = flipCard;
-window.rate = rate;
-window.skipCard = skipCard;
-window.backToSource = backToSource;
-window.createDeck = createDeck;
-window.addWordToDeck = addWordToDeck;
-window.deleteDeck = deleteDeck;
+function updateStudyHeader(){
+  const total = session.plannedCount || 1;
+  const done = Math.min(total, session.seen.size);
+  $('#study-count').textContent = `${done}/${total}`;
+  $('#study-progress').style.width = Math.round(done/total*100) + '%';
+  $('#study-title').textContent = session.title || 'Учёба';
+}
 
-init();
-</script>
-</body>
-</html>
+function updateRatePreview(){
+  if (!session.current) return;
+  const p = previewIntervals(session.current);
+  $('#k-hard').textContent = p.hard;
+  $('#k-ok').textContent = p.ok;
+  $('#k-easy').textContent = p.easy;
+}
+
+function updateFavIcon(){
+  const c = STATE.cards[session.current];
+  const el = $('#fav-ico');
+  if (!c) return;
+  if (c.flags.fav) el.setAttribute('fill','currentColor');
+  else el.setAttribute('fill','none');
+  $('[data-act="study-fav"]').style.color = c.flags.fav ? '#E8A83A' : '';
+}
+
+function revealCard(){
+  if (!session.current) return;
+  session.revealed = true;
+  $('#flashcard').classList.add('revealed');
+  $('#rate-row').style.visibility = 'visible';
+}
+
+function rateCurrent(kind){
+  if (!session.current) return;
+  if (!session.revealed) { revealCard(); return; }
+  const c = STATE.cards[session.current];
+  const cardId = session.current;
+  const elapsed = now() - session.stats.cardStartMs;
+  const wasNew = !c.flags.learned && (c.reps||0) === 0;
+
+  // SRS
+  rate(cardId, kind);
+
+  // session stats
+  session.stats.reviewed += 1;
+  if (kind !== 'hard') session.stats.correct += 1;
+  if (wasNew && STATE.cards[cardId].flags.learned) session.stats.newLearned += 1;
+
+  // day totals
+  bumpDay(1, kind !== 'hard' ? 1 : 0, wasNew && STATE.cards[cardId].flags.learned ? 1 : 0, elapsed);
+
+  // анимация выхода
+  const fc = $('#flashcard');
+  const dir = kind === 'easy' ? 'swipe-right' : kind === 'hard' ? 'swipe-left' : 'swipe-up';
+  fc.classList.add(dir);
+
+  // реинсёртим в циркуляционную очередь
+  reinsert(cardId, kind);
+
+  setTimeout(() => renderNextCard(), 240);
+}
+
+function finishSess
